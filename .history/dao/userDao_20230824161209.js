@@ -16,6 +16,7 @@ class UserDao {
             specials: false
         });
         user.password = encrypt.getSHA512Hash(user.password, Buffer.from(user.salt), 1024, 20).toString('utf-8');
+        user.version = 0
         UserModel.create(user).then(() => {
             ResponseUtil.sendOkResponseMsg(res, '注册成功！', null);
         }).catch((ex) => {

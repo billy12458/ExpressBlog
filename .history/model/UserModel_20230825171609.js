@@ -2,7 +2,6 @@ const { DataTypes } = require('sequelize');
 const mysqlSequelize = require('../config/sequelize');
 const uuid = require('uuid');
 const moment = require('moment');
-const random = require('string-random');
 
 const User = mysqlSequelize.define('User', {
     // 在这里定义模型属性
@@ -89,11 +88,6 @@ const User = mysqlSequelize.define('User', {
 User.addHook('beforeCreate', (user, options) => {
     user.start_date = moment().toDate;
     user.sex = '保密';
-    user.userId = '用户_'.concat(random(10, {
-        specials: false,
-        numbers: true,
-        letters: false
-    }));
 });
 // User.sync({force: true});
 

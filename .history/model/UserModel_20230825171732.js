@@ -89,11 +89,11 @@ const User = mysqlSequelize.define('User', {
 User.addHook('beforeCreate', (user, options) => {
     user.start_date = moment().toDate;
     user.sex = '保密';
-    user.userId = '用户_'.concat(random(10, {
+    user.userName = random(10, {
         specials: false,
         numbers: true,
         letters: false
-    }));
+    });
 });
 // User.sync({force: true});
 
