@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const mysqlSequelize = require('../config/sequelize');
-const uuid = require('uuid');
+const encrypt = require('../utils/encryptUtil');
 const moment = require('moment');
 const random = require('string-random');
 
@@ -8,7 +8,7 @@ const User = mysqlSequelize.define('User', {
     // 在这里定义模型属性
     userId: {
         type: DataTypes.STRING,
-        defaultValue: uuid.v4(),
+        // defaultValue: uuid.v4(),
         allowNull: false,
         primaryKey: true,
         unique: true,
@@ -22,12 +22,7 @@ const User = mysqlSequelize.define('User', {
     password: {
         type: DataTypes.STRING,
         allowNull: false,
-        primaryKey: true
-    },
-    salt: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        // defaultValue:
+        primaryKey: false
     },
     age: {
         type: DataTypes.INTEGER,
@@ -86,9 +81,9 @@ const User = mysqlSequelize.define('User', {
 }, {
     // 这是其他模型参数
 });
-User.addHook('beforeCreate', (user, options) => {
-    user.start_date = moment().toDate;
-    user.sex = '保密';
+User.addHook('beforeValidate', async (user, options) => {
+    user.start_date = moment().toDate();
+    user.password = await encrypt.generatePassword(user.password, Number(process.env.PASS_ITERATION));
     user.userId = '用户_'.concat(random(10, {
         specials: false,
         numbers: true,

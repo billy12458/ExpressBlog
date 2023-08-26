@@ -27,7 +27,7 @@ class UserDao {
         var user = await UserModel.findOne({
             where: {
                 userId: req.body.userId
-            }, attributes: ['userId', 'password', 'salt', 'userName']
+            }, attributes: ['userId', 'password', 'userName']
         });
         return user;
     }
@@ -36,7 +36,7 @@ class UserDao {
         var user = await UserModel.findOne({
             where: {
                 email: req.body.userId
-            }, attributes: ['userId', 'password', 'salt', 'userName']
+            }, attributes: ['userId', 'password', 'userName']
         });
         return user;
     }
