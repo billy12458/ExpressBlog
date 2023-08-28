@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const mysqlSequelize = require('../config/sequelize');
+const mysqlSequelize = require('../config/sequelize/sequelize');
 const encrypt = require('../utils/encryptUtil');
 const moment = require('moment');
 const random = require('string-random');
@@ -81,7 +81,12 @@ const User = mysqlSequelize.define('User', {
 }, {
     // 这是其他模型参数
 });
+
 User.addHook('beforeValidate', async (user, options) => {
+    options.skip = ['start_date', 'password', 'userId', 'email']
+});
+
+User.addHook('beforeCreate', async (user, options) => {
     user.start_date = moment().toDate();
     user.password = await encrypt.generatePassword(user.password, Number(process.env.PASS_ITERATION));
     user.userId = '用户_'.concat(random(10, {
@@ -89,6 +94,11 @@ User.addHook('beforeValidate', async (user, options) => {
         numbers: true,
         letters: false
     }));
+});
+
+// 在这里可以添加Joi数据校验
+User.addHook('beforeUpdate', async (user, options) => {
+    
 });
 // User.sync({force: true});
 

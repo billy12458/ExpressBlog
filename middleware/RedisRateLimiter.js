@@ -30,7 +30,15 @@ const testRateLimiter = new RateLimiterRedis({
     points: 1,
     duration: 1,
     blockDuration: 180
-})
+});
+
+const mailRateLimit = new RateLimiterRedis({
+    storeClient: redisClient,
+    keyPrefix: "test_rate_limit",
+    points: 1,
+    duration: 60,
+    blockDuration: 120
+});
 
 var rateLimiterMiddleware = (req, res, next) => {
 	rateLimiter.consume(req.ip)
@@ -58,8 +66,22 @@ var testRateLimiterMiddleware = (req, res, next) => {
 		});
 };
 
+var mailRateLimiterMiddleware = (req, res, next) => {
+	mailRateLimit.consume(req.ip)
+		.then(() => {
+			next();
+		}).catch(() => {
+			res.status(429).send({
+				status: 429,
+				msg: '请求过于频繁，请2分钟后再试!',
+				data: null
+			});
+		});
+};
+
 module.exports = {
     testRateLimiterMiddleware,
-    rateLimiterMiddleware
+    rateLimiterMiddleware,
+	mailRateLimiterMiddleware
 };
 

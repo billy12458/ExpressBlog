@@ -2,7 +2,7 @@
 const moment = require('moment');
 const random = require('string-random');
 const { DataTypes } = require('sequelize');
-const mysqlSequelize = require('../config/sequelize');
+const mysqlSequelize = require('../config/sequelize/sequelize');
 
 const Log = mysqlSequelize.define('logs', {
     userId: {

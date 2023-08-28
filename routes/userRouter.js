@@ -14,6 +14,10 @@ userRouter.post('/my', function (req, res, next) {
   userService.getMyUserInfoById(req, res, next);
 })
 
+userRouter.patch('/info/modify', function (req, res, next) {
+  userService.modifyUserInfo(req, res, next);
+})
+
 userRouter.get('/isLogin', function (req, res, next) {
   userService.isLogin(req, res, next);
 })

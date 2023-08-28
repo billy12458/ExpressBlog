@@ -16,6 +16,10 @@ blogRouter.get('/count/:blogId', function (req, res) {
   blogService.getBlogViewById(req, res);
 });
 
+blogRouter.get('/totalNum', function (req, res, next) {
+  blogService.getBlogsCountByUser(req, res, next);
+});
+
 blogRouter.put('/search/title/:title/paged', function (req, res, next) {
   blogService.getPagedBlogsByTitle(req, res, next);
 });

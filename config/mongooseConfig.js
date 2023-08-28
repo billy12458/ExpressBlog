@@ -67,8 +67,7 @@ var blogSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true,
-        minlength: 36,
-        maxlength: 36,
+        maxlength: 20,
         immutable: true
     },
     userName: {

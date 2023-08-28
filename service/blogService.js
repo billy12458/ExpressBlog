@@ -11,16 +11,17 @@ class blogService {
     }
 
     static createBlog(req, res, next) {
-        blogModel.create({ ...req.body, }).then(() => {
+        blogModel.create({ ...req.body, userId: req.session.userId}).then(() => {
             Response.sendOkResponseMsg(res, '博客创建成功！', null);
-        }).catch(() => {
+        }).catch((err) => {
+            console.log(err.message);
             next(createError(500, '博客创建失败！'));
         });
     }
 
     static deleteBlog(req, res, next) {
         blogModel.deleteOne({
-            blogId: req.params.id,
+            blogId: req.params.blogId,
             userId: req.session.userId
         }).then(() => {
             Response.sendOkResponseMsg(res, '博客删除成功！', null);
@@ -77,16 +78,34 @@ class blogService {
             });
     }
 
-    static async getBlogById(req, res) {
+    static getBlogById(req, res) {
         let { blogId } = req.params;
-        var result = await blogModel.find({ blogId: blogId }).exec();
-        Response.sendOkResponseMsg(res, '查询成功！', result);
+        blogModel.find({ blogId: blogId }).exec().then((result) => {
+            Response.sendOkResponseMsg(res, '查询成功！', result);
+        }).catch(() => {
+            next(createError(500, '查询失败！'));
+        });
     }
 
     static async getBlogViewById(req, res) {
         let { blogId } = req.params;
         var result = Number(await redisClient.pfcount(blogId));
         Response.sendOkResponseMsg(res, '查询成功！', result);
+    }
+
+    /**
+     * get the total number of blogs a user has
+     * @param {*} req the user's request
+     * @param {*} res the user's corresponding response
+     * @param {*} next nextFunction
+     */
+    static getBlogsCountByUser(req, res, next) {
+        blogModel.count({ userId: req.body.userId }).exec()
+            .then((result) => {
+                Response.sendOkResponseMsg(res, '总数查询成功！', result);
+            }).catch(() => {
+                next(createError(500, '分页查询失败！'));
+            });
     }
 
 }

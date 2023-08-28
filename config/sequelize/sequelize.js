@@ -14,7 +14,8 @@ const sequelize = new Sequelize({
         min: 50,
         idle: 1000 * 180,
         evict: 1000 * 60 * 60
-    }
+    },
+    logging: false
 });
 
 try {

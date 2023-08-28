@@ -11,6 +11,10 @@ class userService {
 
     }
 
+    static authenticateMailCode(req, res, next) {
+        
+    }
+
     static getUserSessions(req, res, next) {
         sessionModel.find({ session: new RegExp(`${req.session.userId}`) })
             .exec().then(result => {
@@ -48,6 +52,21 @@ class userService {
             Response.sendOkResponseMsg(res, "查询成功！", userResult);
         }).catch(() => {
             next(createError(404, "没有此用户！"));
+        })
+    }
+
+    static modifyUserInfo(req, res, next) {
+        userModel.update({ ...req.body }, {
+            where: {
+                userId: {
+                    [Op.eq]: req.session.userId
+                }
+            }
+        }).then(() => {
+            Response.sendOkResponseMsg(res, "更新成功！", null);
+        }).catch((err) => {
+            console.log(err.message);
+            next(createError(500, "更新失败！"));
         })
     }
 
