@@ -1,5 +1,6 @@
 var express = require('express');
 const userService = require('../service/userService');
+const userupdateMiddleware = require('../middleware/user/userUpdateMiddleware');
 var userRouter = express.Router();
 
 userRouter.post('/sessions', function (req, res, next) {
@@ -14,7 +15,7 @@ userRouter.post('/my', function (req, res, next) {
   userService.getMyUserInfoById(req, res, next);
 })
 
-userRouter.patch('/info/modify', function (req, res, next) {
+userRouter.patch('/info/modify', [userupdateMiddleware], function (req, res, next) {
   userService.modifyUserInfo(req, res, next);
 })
 

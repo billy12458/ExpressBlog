@@ -2,7 +2,7 @@ const { transporter, activateMailOptions, authenticationMailOptions, defaultMail
 const Response = require('../utils/ResponseUtil');
 const createError = require('http-errors');
 const random = require('string-random');
-const sprintf = require('sprintf-js');
+const {sprintf} = require('sprintf-js');
 
 class mailService {
 
@@ -11,18 +11,20 @@ class mailService {
     }
 
     static sendActivationCode(req, res, next) {
-        activateMailOptions.to = req.body.email;
         var code = random(8, {
             numbers: true,
             specials: false,
             letters: false
         });
+        activateMailOptions.to = req.body.email;
+        activateMailOptions.text = sprintf(process.env.ACTIVATE_TEXT, code);
         transporter.sendMail(activateMailOptions, (error, info) => {
             if (error) {
                 console.log(error);
                 next(createError(500, "邮件发送失败！"))
             } else {
-                Response.sendOkResponseMsg(res, '发送成功！', info.response);
+                req.code = code;
+                next();
             }
         })
     }

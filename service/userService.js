@@ -26,9 +26,10 @@ class userService {
 
     // switch to global exception middleware
     static deleteSession(req, res, next) {
-        sessionModel.findByIdAndRemove(req.params.sessionId).then(() => {
+        sessionModel.findByIdAndRemove(req.params.sessionId).then((result) => {
             Response.sendOkResponseMsg(res, "删除成功！", result);
         }).catch((err) => {
+            console.log(err);
             next(createError(500, "删除失败！"));
         });
     }

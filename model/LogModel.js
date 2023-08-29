@@ -34,9 +34,9 @@ const Log = mysqlSequelize.define('logs', {
     loginIp: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            isIP: true
-        }
+        // validate: {
+        //     isIP: true
+        // }
     },
     system: {
         type: DataTypes.STRING,
