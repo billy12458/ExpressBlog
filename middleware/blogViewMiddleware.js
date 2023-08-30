@@ -1,4 +1,4 @@
-const { redisClient } = require('../config/redisClient');
+const { redisClient } = require('../config/redis/redisClient');
 
 var blogViewMiddleware = function (req, res, next) {
     let { ip } = req

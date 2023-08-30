@@ -1,6 +1,6 @@
 const createError = require('http-errors');
 const Response = require('../utils/ResponseUtil');
-const { redisClient } = require('../config/redisClient');
+const { redisClient } = require('../config/redis/redisClient');
 
 let authenticateMiddleware = async function (req, res, next) {
     var result = await redisClient.get(req.body.email);

@@ -11,10 +11,6 @@ class userService {
 
     }
 
-    static authenticateMailCode(req, res, next) {
-        
-    }
-
     static getUserSessions(req, res, next) {
         sessionModel.find({ session: new RegExp(`${req.session.userId}`) })
             .exec().then(result => {
@@ -69,6 +65,11 @@ class userService {
             console.log(err.message);
             next(createError(500, "更新失败！"));
         })
+    }
+
+    // 代码一样，但是要在中间件里面进行数据校验和邮箱验证码验证！
+    static modifyEmailInfo(req, res, next) {
+        this.modifyUserInfo(req, res, next);
     }
 
     static async getPagedUsersBySearch(req, res) {

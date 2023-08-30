@@ -2,8 +2,11 @@ const UserModel = require('../model/UserModel');
 const random = require('string-random');
 const ResponseUtil = require('../utils/ResponseUtil')
 const encrypt = require('../utils/encryptUtil');
+const validator = require('validator').default;
+var include = ['userId', 'password', 'userName'];
 
 class UserDao {
+    
     constructor() {
 
     }
@@ -23,20 +26,40 @@ class UserDao {
         })
     }
 
-    static async getUserById(req, res) {
+    static async getLoginUser(req, res, next) {
+        let { userId } = req.body;
+        if (validator.isEmail(userId))
+            return this.getUserByEmail(req);
+        if (validator.isMobilePhone(userId))
+            return this.getUserByPhone(req);
+        else {
+            return this.getUserById(req);
+        }
+    }
+
+    static async getUserById(req) {
         var user = await UserModel.findOne({
             where: {
                 userId: req.body.userId
-            }, attributes: ['userId', 'password', 'userName']
+            }, attributes: include
         });
         return user;
     }
 
-    static async getUserByEmail(req, res) {
+    static async getUserByEmail(req) {
         var user = await UserModel.findOne({
             where: {
                 email: req.body.userId
-            }, attributes: ['userId', 'password', 'userName']
+            }, attributes: include
+        });
+        return user;
+    }
+
+    static async getUserByPhone(req) {
+        var user = await UserModel.findOne({
+            where: {
+                phone: req.body.userId
+            }, attributes: include
         });
         return user;
     }

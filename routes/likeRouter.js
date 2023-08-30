@@ -1,0 +1,23 @@
+const express = require('express')
+const likeService = require('../service/likeService');
+const blogExistMiddleware = require('../middleware/blog/blogExistMiddleware');
+
+var likeRouter = express.Router();
+
+likeRouter.put('/blog/:blogId', [blogExistMiddleware], function (req, res, next) {
+    likeService.likeBlog(req, res, next);
+})
+
+likeRouter.put('/count/:blogId', function (req, res, next) {
+    likeService.getLikesCountById(req, res, next);
+})
+
+likeRouter.get('/isLiked', function (req, res, next) {
+    likeService.getIsLikedById(req, res, next);
+})
+
+likeRouter.post('/cancel', function (req, res, next) {
+    likeService.cancelLikeBlog(req, res, next);
+})
+
+module.exports = likeRouter;

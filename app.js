@@ -17,6 +17,7 @@ var registerRouter = require('./routes/registerRouter');
 var blogRouter = require('./routes/blogRouter');
 var testRouter = require('./routes/testRouter');
 var logRouter = require('./routes/logRouter');
+const likeRouter = require('./routes/likeRouter');
 
 var app = express();
 
@@ -26,11 +27,11 @@ app.set('view engine', 'ejs');
 
 app.use(cors(corsOptions));
 app.use(blogSession);
-// app.use(logger('dev'));
 app.use(express.json({ inflate: true, limit: '5mb' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
+app.use('/docs', express.static(path.resolve(__dirname, '/dist')))
 
 app.use('*', antiXss, isLoginMiddleware, rateLimiterMiddleware);
 app.use('/', indexRouter);
@@ -40,6 +41,7 @@ app.use('/blogs', blogRouter);
 app.use('/test', testRouter);
 app.use('/logout', logoutRouter);
 app.use('/logs', logRouter);
+app.use('/likes', likeRouter);
 app.use(registerRouter);
 
 // catch 404 and forward to error handler

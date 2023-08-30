@@ -1,6 +1,6 @@
 const { blogModel } = require('../config/mongooseConfig');
 const Response = require('../utils/ResponseUtil');
-const { redisClient } = require('../config/redisClient');
+const { redisClient } = require('../config/redis/redisClient');
 const createError = require('http-errors');
 
 // 后面稍微重构一下代码
@@ -11,7 +11,7 @@ class blogService {
     }
 
     static createBlog(req, res, next) {
-        blogModel.create({ ...req.body, userId: req.session.userId}).then(() => {
+        blogModel.create({ ...req.body, userId: req.session.userId }).then(() => {
             Response.sendOkResponseMsg(res, '博客创建成功！', null);
         }).catch((err) => {
             console.log(err.message);
@@ -87,6 +87,11 @@ class blogService {
         });
     }
 
+    /**
+     * get the total number of views a blog has gained
+     * @param {*} req the user's request
+     * @param {*} res the user's corresponding response
+     */
     static async getBlogViewById(req, res) {
         let { blogId } = req.params;
         var result = Number(await redisClient.pfcount(blogId));
@@ -108,6 +113,21 @@ class blogService {
             });
     }
 
+    /**
+     * pick 10 random blogs from the database
+     * @param {*} req the user's request
+     * @param {*} res the user's corresponding response
+     * @param {*} next nextFunction
+     */
+    static blogRecommendation(req, res, next) {
+        blogModel.aggregate([
+            { $sample: { size: 10 } }
+        ]).then(results => {
+            Response.sendOkResponseMsg(res, '推荐成功！', results);
+        }).catch(() => {
+            next(createError(500, '推荐失败！'));
+        });
+    }
 }
 
 module.exports = blogService;
