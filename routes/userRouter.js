@@ -24,7 +24,7 @@ userRouter.patch('/info/modify', [userUpdateMiddleware], function (req, res, nex
 })
 
 userRouter.post('/email/sendCode', [emailMiddleware], function (req, res, next) {
-  mailService.sendActivationCode(req, res, next);
+  mailService.sendActivationCode(req, null, res, next);
 }, [codeMiddleware]);
 
 userRouter.patch('/email/modify', [emailMiddleware, authenticateMiddleware], (req, res, next) => {

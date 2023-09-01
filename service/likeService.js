@@ -4,6 +4,12 @@ const Response = require('../utils/ResponseUtil');
 
 class likeService {
 
+    /**
+     * like a specific blog (with redis zset)
+     * @param {*} req user's request
+     * @param {*} res user's response
+     * @param {*} next nextFunction
+     */
     static likeBlog(req, res, next) {
         likeRedisClient.zadd(req.params.blogId, Date.now(), req.session.userId)
             .then(() => {
@@ -13,6 +19,12 @@ class likeService {
             });
     }
 
+    /**
+     * cancel like on a specific blog (with redis zset)
+     * @param {*} req user's request
+     * @param {*} res user's response
+     * @param {*} next nextFunction
+     */
     static cancelLikeBlog(req, res, next) {
         if (this.isLikedById(req, res, next) == null)
             next(createError(500, "您还未点赞！"));
@@ -25,6 +37,12 @@ class likeService {
         }
     }
 
+    /**
+     * get the total number of likes of a blog (with redis zset)
+     * @param {*} req user's request
+     * @param {*} res user's response
+     * @param {*} next nextFunction
+     */
     static getLikesCountById(req, res, next) {
         likeRedisClient.zcount(req.params.blogId, 0, Infinity)
             .then((result) => {
@@ -34,6 +52,12 @@ class likeService {
             });
     }
 
+    /**
+     * whether a specific blog is liked by the user (with redis zset)
+     * @param {*} req user's request
+     * @param {*} res user's response
+     * @param {*} next nextFunction
+     */
     static getIsLikedById(req, res, next) {
         this.isLikedById(req, res, next).then((result) => {
             Response.sendOkResponseMsg(res, '查询成功！', result == null ? false : true);

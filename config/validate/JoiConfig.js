@@ -12,11 +12,18 @@ const pagedSchema = Joi.object({
 
 const emailSchema = Joi.object().keys({
     email: Joi.string().required().email().error(new Error("邮箱不符合规范！")),
-    code: Joi.string().required().length(8).error(new Error("验证码不符合规范！")),
-}).length(2).error(new Error("数据不符合规范！"))
+    code: Joi.string().length(8).error(new Error("验证码不符合规范！")),
+}).length(2).error(new Error("数据不符合规范！"));
+
+const passwordSchema = Joi.object({
+    password: Joi.string().required().min(10).max(32).error(new Error("密码不符合规范！")),
+    newPassword: Joi.string().required().min(10).max(32).error(new Error("密码不符合规范！")),
+    code: Joi.string().length(8).error(new Error("验证码不符合规范！")),
+}).length(3).error(new Error("数据不符合规范！"));
 
 module.exports = {
     updateSchema,
     pagedSchema,
-    emailSchema
+    emailSchema,
+    passwordSchema
 }

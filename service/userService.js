@@ -2,7 +2,7 @@ const { sessionModel } = require('../config/mongooseConfig');
 const { Op } = require('sequelize')
 const userModel = require('../model/UserModel');
 const Response = require('../utils/ResponseUtil');
-const { userExcludeOptions, userSearchExclude } = require('../config/sequelize/excludeOptions');
+const { userExcludeOptions, userSearchExclude, emailInclude } = require('../config/sequelize/excludeOptions');
 const createError = require('http-errors');
 
 class userService {
@@ -11,6 +11,12 @@ class userService {
 
     }
 
+    /**
+     * Retrieve the user's sessions, here we use mongodb + connect-mongo to store sessions
+     * @param {*} req the user's request
+     * @param {*} res the user's response
+     * @param {*} next nextFunction to further spread information
+     */
     static getUserSessions(req, res, next) {
         sessionModel.find({ session: new RegExp(`${req.session.userId}`) })
             .exec().then(result => {
@@ -20,6 +26,12 @@ class userService {
             });
     }
 
+    /**
+     * delete the user's specific session, causing the related device to log out the account
+     * @param {*} req the user's request
+     * @param {*} res the user's response
+     * @param {*} next nextFunction to further spread information
+     */
     // switch to global exception middleware
     static deleteSession(req, res, next) {
         sessionModel.findByIdAndRemove(req.params.sessionId).then((result) => {
@@ -30,6 +42,12 @@ class userService {
         });
     }
 
+    /**
+     * Retrieve the current user's user info(without sensitive information)
+     * @param {*} req the user's request
+     * @param {*} res the user's response
+     * @param {*} next nextFunction to further spread information
+     */
     static getMyUserInfoById(req, res, next) {
         userModel.findOne({
             where: { userId: req.session.userId },
@@ -41,6 +59,19 @@ class userService {
         })
     }
 
+    static async getEmailById(req, res, next) {
+        return await userModel.findOne({
+            where: { userId: req.session.userId },
+            attributes: emailInclude
+        });
+    }
+
+    /**
+    * Retrieve other user's user info(without sensitive information)
+    * @param {*} req the user's request
+    * @param {*} res the user's response
+    * @param {*} next nextFunction to further spread information
+    */
     static getOthersUserInfoById(req, res, next) {
         userModel.findOne({
             where: { userId: req.params.userId },
@@ -52,6 +83,12 @@ class userService {
         })
     }
 
+    /**
+    * Modify the current user's info(except for phone and email)
+    * @param {*} req the user's request
+    * @param {*} res the user's response
+    * @param {*} next nextFunction to further spread information
+    */
     static modifyUserInfo(req, res, next) {
         userModel.update({ ...req.body }, {
             where: {
@@ -72,20 +109,22 @@ class userService {
         this.modifyUserInfo(req, res, next);
     }
 
-    static async getPagedUsersBySearch(req, res) {
+    static getPagedUsersBySearch(req, res) {
         let { pageSize, pageNum } = req.query;
-        var userResult = await userModel.findAndCountAll(
-            {
-                where: {
-                    userName: {
-                        [Op.like]: `%${req.body.userName}%`
-                    }
-                },
-                attributes: userSearchExclude,
-                offset: (pageNum - 1) * pageSize,
-                limit: Number(pageSize)
-            });
-        Response.sendOkResponseMsg(res, "分页查询成功！", userResult);
+        userModel.findAndCountAll({
+            where: {
+                userName: {
+                    [Op.like]: `%${req.body.userName}%`
+                }
+            },
+            attributes: userSearchExclude,
+            offset: (pageNum - 1) * pageSize,
+            limit: Number(pageSize)
+        }).then((userResult) => {
+            Response.sendOkResponseMsg(res, "用户查询成功！", userResult);
+        }).catch((err) => {
+            next(createError(500, "用户查询失败！"));
+        })
     }
 
     static isLogin(req, res, next) {

@@ -18,6 +18,8 @@ var blogRouter = require('./routes/blogRouter');
 var testRouter = require('./routes/testRouter');
 var logRouter = require('./routes/logRouter');
 const likeRouter = require('./routes/likeRouter');
+const forgetRouter = require('./routes/forgetRouter');
+const suggestionRouter = require('./routes/suggestionRouter');
 
 var app = express();
 
@@ -42,6 +44,8 @@ app.use('/test', testRouter);
 app.use('/logout', logoutRouter);
 app.use('/logs', logRouter);
 app.use('/likes', likeRouter);
+app.use('/forget', forgetRouter);
+app.use('/suggest', suggestionRouter);
 app.use(registerRouter);
 
 app.use(function (err, req, res, next) {

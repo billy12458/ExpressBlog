@@ -16,8 +16,8 @@ var blogSession = session({
         mongoUrl: process.env.MONGO_URL
     }),
     cookie: {
+        maxAge: 1000 * 60 * 60 * 176,
         secure: false,
-        maxAge: 1000 * 60 * 60 * 168,
         httpOnly: true,
         path: '/',
         sameSite: 'strict'

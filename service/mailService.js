@@ -2,7 +2,7 @@ const { transporter, activateMailOptions, authenticationMailOptions, defaultMail
 const Response = require('../utils/ResponseUtil');
 const createError = require('http-errors');
 const random = require('string-random');
-const {sprintf} = require('sprintf-js');
+const { sprintf } = require('sprintf-js');
 
 class mailService {
 
@@ -10,13 +10,13 @@ class mailService {
 
     }
 
-    static sendActivationCode(req, res, next) {
+    static sendActivationCode(req, mail, res, next) {
         var code = random(8, {
             numbers: true,
             specials: false,
             letters: false
         });
-        activateMailOptions.to = req.body.email;
+        activateMailOptions.to = mail != null ? mail : req.body.email;
         activateMailOptions.text = sprintf(process.env.ACTIVATE_TEXT, code);
         transporter.sendMail(activateMailOptions, (error, info) => {
             if (error) {

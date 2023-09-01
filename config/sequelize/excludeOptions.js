@@ -8,7 +8,10 @@ var userSearchExclude = {
     exclude: excludeBasic.concat(['email', 'phone', 'sex', 'age'])
 }
 
+var emailInclude = ['email']
+
 module.exports = {
     userExcludeOptions,
-    userSearchExclude
+    userSearchExclude,
+    emailInclude
 }
