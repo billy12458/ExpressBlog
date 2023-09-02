@@ -1,14 +1,9 @@
 const express = require("express");
-const { testRateLimiterMiddleware, mailRateLimiterMiddleware } = require('../middleware/RedisRateLimiter');
+const { testRateLimiterMiddleware, mailRateLimiterMiddleware } = require('../middleware/limit/RedisRateLimiter');
 const encrypt = require('../utils/encryptUtil');
 const mailService = require("../service/mailService");
 const ipService = require("../service/ipService");
-var createPool = require('ssdb').createPool;
-var pool = createPool({
-    host: '127.0.0.1',
-    port: 8888,
-    auth: null
-});
+const cacheObj = require('../model/test');
 
 var testRouter = express.Router();
 testRouter.get('/rateLimit', [testRateLimiterMiddleware], function (req, res) {
@@ -33,15 +28,21 @@ testRouter.get('/ipInfo', function (req, res, next) {
 })
 
 // testRouter.get('/ssdb', function (req, res, next) {
-//   var conn = pool.acquire();
-//   conn.set('key1', '12345', function(err, data) {
-//     if (err) {
-//       throw err;
-//     }
-//     // data => '1'
-//   });
-//   res.send(conn.get('key1'))
+//   res.send(client.get('key2'))
 // })
 
+testRouter.get('/mysql', function (req, res, next) {
+  cacheObj.find({
+    where: {
+      age: {
+        [Op.gt]: 20
+      }
+    }
+  }).then(function (row) {
+    console.log(row); // sequelize db object
+    console.log(cacheObj.cacheHit); // true or false
+  });
+  res.send(row);
+})
 
 module.exports = testRouter;

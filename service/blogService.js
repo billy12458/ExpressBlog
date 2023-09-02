@@ -10,6 +10,12 @@ class blogService {
 
     }
 
+    /**
+     * Creates a new blog (in login status) after it went through content censor
+     * @param {*} req the user's request
+     * @param {*} res the user's response
+     * @param {*} next nextFunction
+     */
     static createBlog(req, res, next) {
         blogModel.create({ ...req.body, userId: req.session.userId }).then(() => {
             Response.sendOkResponseMsg(res, '博客创建成功！', null);
@@ -19,6 +25,12 @@ class blogService {
         });
     }
 
+    /**
+     * Deletes an existing blog (in login status)
+     * @param {*} req the user's request
+     * @param {*} res the user's response
+     * @param {*} next nextFunction
+     */
     static deleteBlog(req, res, next) {
         blogModel.deleteOne({
             blogId: req.params.blogId,
@@ -30,6 +42,12 @@ class blogService {
         });
     }
 
+    /**
+     * Finds all blogs that matches the title regular expression, use `sort()` to display by `publishDate`.
+     * @param {*} req the user's request
+     * @param {*} res the user's response
+     * @param {*} next nextFunction
+     */
     static async findBlogsByTitle(req, res) {
         var result = await blogModel.find({ title: new RegExp(req.params.title) })
             .sort({ publishDate: -1 }).exec();
@@ -46,6 +64,13 @@ class blogService {
             });
     }
 
+    /**
+     * Retrieve blogs with the help of pagination.
+     * Behave like `getMyPagedBlogs(req, res, next)`, but focus more on titles
+     * @param {*} req the user's request
+     * @param {*} res the user's response
+     * @param {*} next nextFunction
+     */
     static getPagedBlogsByTitle(req, res, next) {
         let { pageNum, pageSize } = req.query;
         blogModel.paginate({ title: new RegExp(req.params.title) }, { page: pageNum, limit: pageSize })
@@ -56,6 +81,13 @@ class blogService {
             });
     }
 
+    /**
+     * Retrieve blogs with the help of pagination.
+     * Behave like `getMyPagedBlogs(req, res, next)`, but focus more on userIds
+     * @param {*} req the user's request
+     * @param {*} res the user's response
+     * @param {*} next nextFunction
+     */
     static getPagedBlogsByUserId(req, res, next) {
         let { pageNum, pageSize } = req.query;
         blogModel.paginate(blogModel.find({ userId: req.params.userId })
@@ -67,6 +99,13 @@ class blogService {
             });
     }
 
+    /**
+     * Retrieve blogs with the help of pagination.
+     * Behave like `getMyPagedBlogs(req, res, next)`, but focus more on tags
+     * @param {*} req the user's request
+     * @param {*} res the user's response
+     * @param {*} next nextFunction
+     */
     static getPagedBlogsByTags(req, res) {
         let { pageNum, pageSize } = req.query;
         blogModel.paginate(blogModel.find({ tags: { $in: req.body.tags } })
@@ -114,7 +153,7 @@ class blogService {
     }
 
     /**
-     * pick 10 random blogs from the database
+     * pick 10 random blogs from the database, we use `$sample` operator to achieve our goal
      * @param {*} req the user's request
      * @param {*} res the user's corresponding response
      * @param {*} next nextFunction

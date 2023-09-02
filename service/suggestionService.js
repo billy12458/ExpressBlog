@@ -15,23 +15,21 @@ class suggestionService {
         suggestionModel.create(suggestion).then(result => {
             Response.sendOkResponseMsg(res, "反馈成功！", null);
         }).catch((err) => {
-            console.log(err.message);
             next(createError(500, "反馈失败！"));
         });
     }
 
-    static modifySuggestion(req, res, next) {
-        // suggestionModel.update({ ...req.body }, {
-        //     where: {
-        //         userId: req.session.userId,
-        //         suggestionId: req.params.suggestId
-        //     }
-        // }).then((result) => {
-        //     Response.sendOkResponseMsg(res, "更新建议成功！", result);
-        // }).catch((err) => {
-        //     console.log(err.message);
-        //     next(createError(500, "更新建议失败！"));
-        // });
+    static async modifySuggestion(req, res, next) {
+        suggestionModel.update({ ...req.body, leftNum: req.leftNum - 1 }, {
+            where: {
+                userId: req.session.userId,
+                suggestionId: req.params.suggestId
+            }
+        }).then((result) => {
+            Response.sendOkResponseMsg(res, "更新建议成功！", result);
+        }).catch((err) => {
+            next(createError(500, "更新建议失败！"));
+        });
     }
 
     static getSuggestionById(req, res, next) {
@@ -67,6 +65,11 @@ class suggestionService {
         }).catch((err) => {
             next(createError(500, "建议查询失败！"));
         })
+    }
+
+    static async getModifyInfoById(req) {
+        var result = await suggestionModel.findByPk(req.params.suggestId, { attributes: ['leftNum', 'commitTime'] });
+        return result.dataValues;
     }
 
 }

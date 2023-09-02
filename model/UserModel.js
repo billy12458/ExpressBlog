@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Op } = require('sequelize');
 const mysqlSequelize = require('../config/sequelize/sequelize');
 const encrypt = require('../utils/encryptUtil');
 const moment = require('moment');
@@ -98,8 +98,21 @@ User.addHook('beforeCreate', async (user, options) => {
 
 // 在这里可以添加Joi数据校验
 User.addHook('beforeUpdate', async (user, options) => {
-    
+
 });
+
+// var cacher = require('sequelize-redis-cache');
+// var redis = require('ioredis').default;
+
+// var rc = new redis();
+// var db = mysqlSequelize;
+// var cacheObj = cacher(db, rc)
+//     .model("User")
+//     .ttl(300);
+// cacheObj.query('select email from user where age > 20 order by start_date asc').then(function (row) {
+//     console.log(row); // sequelize db object
+//     console.log(cacheObj.cacheHit); // true or false
+// });
 // User.sync({force: true});
 
 module.exports = User;

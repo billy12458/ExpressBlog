@@ -1,6 +1,6 @@
 const AipContentCensorClient = require("baidu-aip-sdk").contentCensor;
 
-// 设置APPID/AK/SK
+// 设置APPID/AK/SK，这些信息可以在百度智能云控制台查到，前提你要先开通内容审核服务
 var APP_ID = process.env.AIP_APP_ID;
 var API_KEY = process.env.AIP_APP_KEY;
 var SECRET_KEY = process.env.AIP_APP_SECRET;

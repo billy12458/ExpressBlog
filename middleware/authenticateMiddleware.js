@@ -1,15 +1,21 @@
 const createError = require('http-errors');
 const Response = require('../utils/ResponseUtil');
-const { redisClient } = require('../config/redis/redisClient');
+const { emailRedisClient } = require('../config/redis/redisClient');
 
+/**
+ * The middleware for authenticating email codes after `codeMiddleware` has done its job
+ * @param {*} req the user's request
+ * @param {*} res the user's response
+ * @param {*} next nextFunction
+ */
 let authenticateMiddleware = async function (req, res, next) {
-    var result = await redisClient.get(req.body.email);
+    var result = await emailRedisClient.get(req.body.email);
     if (req.body.code === result) {
-        redisClient.del(req.body.email).then(() => {
+        emailRedisClient.del(req.body.email).then(() => {
             next();
         })
     } else {
-        next(createError(545, "验证码有误，请重试！"));
+        next(createError(545, "验证码有误/过期，请重试！"));
     }
 }
 

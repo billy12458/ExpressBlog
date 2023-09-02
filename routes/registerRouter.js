@@ -1,7 +1,7 @@
 const express = require("express")
 // var registerService = require('../service/registerService');
 const mailService = require("../service/mailService");
-const codeMiddleware = require("../middleware/codeMiddleware");
+const codeMiddleware = require("../middleware/email/codeMiddleware");
 const authenticateMiddleware = require("../middleware/authenticateMiddleware");
 const registerService = require('../service/registerService');
 

@@ -1,6 +1,6 @@
 var express = require('express');
 const suggestionService = require('../service/suggestionService');
-const blogCensorMiddleware = require('../middleware/blogCensorMiddleware');
+const blogCensorMiddleware = require('../middleware/blog/blogCensorMiddleware');
 const pageParamMiddleware = require('../middleware/validate/pageParamMiddleware');
 const modifyMiddleware = require('../middleware/suggestion/modifyMiddleware');
 
@@ -25,7 +25,7 @@ suggestionRouter.post('/my/paged/completed/not', [pageParamMiddleware], function
   suggestionService.getPagedSuggestions(req, res, next, false);
 });
 
-suggestionRouter.post('/my/modify/:suggestId', [blogCensorMiddleware, modifyMiddleware], function (req, res, next) {
+suggestionRouter.post('/my/modify/:suggestId', [modifyMiddleware], function (req, res, next) {
   suggestionService.modifySuggestion(req, res, next);
 });
 

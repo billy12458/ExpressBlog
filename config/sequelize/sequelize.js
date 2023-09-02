@@ -1,5 +1,7 @@
 const { Sequelize } = require('sequelize');
-
+/**
+ * The main configuration for `Sequelize` framework
+ */
 const sequelize = new Sequelize({
     host: process.env.MYSQL_HOST,
     port: process.env.MYSQL_PORT,

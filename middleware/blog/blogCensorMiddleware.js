@@ -1,4 +1,4 @@
-const {client} = require('../config/baidu/contentCensorClient'); 
+const {client} = require('../../config/baidu/contentCensorClient'); 
 const createError = require('http-errors');
 
 var censorMiddleware = function (req, res, next) {

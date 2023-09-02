@@ -59,9 +59,9 @@ const Suggestion = mysqlSequelize.define('suggestion', {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 5,
-        set: function (value) {
-            this.setDataValue('leftNum', value - 1);
-        }
+        // set: function (value) {
+        //     this.setDataValue('leftNum', value - 1);
+        // }
     }
 }, {
     hooks: {

@@ -4,9 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var cors = require('cors');
 const corsOptions = require('./config/corsConfig');
-const antiXss = require('./middleware/antiXSSMiddleware');
-const { rateLimiterMiddleware } = require('./middleware/RedisRateLimiter');
-const blogSession = require('./middleware/expressSession');
+const antiXss = require('./middleware/security/antiXSSMiddleware');
+const { rateLimiterMiddleware } = require('./middleware/limit/RedisRateLimiter');
+const blogSession = require('./middleware/session/expressSession');
 const { isLoginMiddleware } = require('./middleware/isLoginMiddleware');
 
 var indexRouter = require('./routes/index');
@@ -33,10 +33,9 @@ app.use(express.json({ inflate: true, limit: '5mb' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
-app.use('/docs', express.static(path.resolve(__dirname, '/dist')))
+app.use('/', express.static(path.join(__dirname, '/public')))
 
 app.use('*', antiXss, isLoginMiddleware, rateLimiterMiddleware);
-app.use('/', indexRouter);
 app.use('/user', usersRouter);
 app.use('/auth', loginRouter);
 app.use('/blogs', blogRouter);

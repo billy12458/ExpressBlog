@@ -60,10 +60,8 @@ class userService {
     }
 
     static async getEmailById(req, res, next) {
-        return await userModel.findOne({
-            where: { userId: req.session.userId },
-            attributes: emailInclude
-        });
+        var result = await userModel.findByPk(req.session.userId, { attributes: emailInclude });
+        return result.dataValues.email;
     }
 
     /**

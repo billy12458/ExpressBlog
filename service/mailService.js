@@ -24,6 +24,7 @@ class mailService {
                 next(createError(500, "邮件发送失败！"))
             } else {
                 req.code = code;
+                req.email = mail != null ? mail : null;
                 next();
             }
         })

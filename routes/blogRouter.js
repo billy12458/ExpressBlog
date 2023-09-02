@@ -1,7 +1,7 @@
 const express = require("express")
 const blogService = require('../service/blogService');
-const blogViewMiddleware = require('../middleware/blogViewMiddleware');
-const blogCensorMiddleware = require('../middleware/blogCensorMiddleware');
+const blogViewMiddleware = require('../middleware/blog/blogViewMiddleware');
+const blogCensorMiddleware = require('../middleware/blog/blogCensorMiddleware');
 const pageParamMiddleware = require('../middleware/validate/pageParamMiddleware');
 
 var blogRouter = express.Router();

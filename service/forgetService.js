@@ -1,4 +1,5 @@
 const userService = require('../service/userService');
+const encrypt=  require('../utils/encryptUtil');
 
 class forgetService {
 
@@ -6,7 +7,8 @@ class forgetService {
 
     }
 
-    static updateForgetPassword(req, res, next) {
+    static async updateForgetPassword(req, res, next) {
+        req.body.password = await encrypt.generatePassword(req.body.password, process.env.PASS_ITERATION);
         userService.modifyUserInfo(req, res, next);
     }
 

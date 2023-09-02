@@ -1,5 +1,5 @@
 const { RateLimiterRedis } = require('rate-limiter-flexible');
-const {redisClient} = require('../config/redis/redisClient');
+const {redisClient} = require('../../config/redis/redisClient');
 // const redis = require('redis');
 //
 // var client = redis.createClient({

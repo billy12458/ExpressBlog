@@ -1,9 +1,13 @@
 const createError = require('http-errors');
 const { pagedSchema } = require('../../config/validate/JoiConfig');
 
+/**
+ * The middleware to check whether the paging params are absent
+ * @param {*} req the user's request
+ * @param {*} res the user's response
+ * @param {*} next nextFunction
+ */
 let pageParamMiddleware = function (req, res, next) {
-    // console.log(typeof req.query.pageNum);
-    // console.log(typeof req.query.pageSize);
     pagedSchema.validateAsync(req.query).then(() => {
         next();
     }).catch((err) => {
