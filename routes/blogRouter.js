@@ -3,8 +3,12 @@ const blogService = require('../service/blogService');
 const blogViewMiddleware = require('../middleware/blog/blogViewMiddleware');
 const blogCensorMiddleware = require('../middleware/blog/blogCensorMiddleware');
 const pageParamMiddleware = require('../middleware/validate/pageParamMiddleware');
+const { isLoginMiddleware } = require("../middleware/user/isLoginMiddleware");
 
 var blogRouter = express.Router();
+
+blogRouter.all('*', isLoginMiddleware);
+
 blogRouter.put('/create', [blogCensorMiddleware], function (req, res, next) {
   blogService.createBlog(req, res, next);
 });

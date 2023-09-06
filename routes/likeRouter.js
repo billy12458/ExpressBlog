@@ -1,8 +1,11 @@
 const express = require('express')
 const likeService = require('../service/likeService');
 const blogExistMiddleware = require('../middleware/blog/blogExistMiddleware');
+const { isLoginMiddleware } = require('../middleware/user/isLoginMiddleware');
 
 var likeRouter = express.Router();
+
+likeRouter.all('*', isLoginMiddleware);
 
 likeRouter.put('/blog/:blogId', [blogExistMiddleware], function (req, res, next) {
     likeService.likeBlog(req, res, next);

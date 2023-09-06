@@ -3,8 +3,12 @@ const suggestionService = require('../service/suggestionService');
 const blogCensorMiddleware = require('../middleware/blog/blogCensorMiddleware');
 const pageParamMiddleware = require('../middleware/validate/pageParamMiddleware');
 const modifyMiddleware = require('../middleware/suggestion/modifyMiddleware');
+const { isLoginMiddleware } = require('../middleware/user/isLoginMiddleware');
 
 var suggestionRouter = express.Router();
+
+suggestionRouter.all('*', isLoginMiddleware);
+
 suggestionRouter.put('/commit', [blogCensorMiddleware], function (req, res, next) {
   suggestionService.saveSuggestion(req, res, next);
 });

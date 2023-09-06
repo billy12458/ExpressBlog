@@ -5,7 +5,13 @@ const Response = require('../utils/ResponseUtil');
 const { Op } = require('sequelize')
 
 class LogService {
-  // 添加日志
+
+  /**
+    * Add a login log everytime a user made a successful login
+    * @param {*} req the user's request
+    * @param {*} res the user's response
+    * @param {*} next nextFunction to further spread information
+    */
   static async addLog(req, res, next) {
     try {
       await logModel.create({ ...req.body, userId: req.session.userId, loginIp: req.ip });
@@ -14,7 +20,13 @@ class LogService {
       next(createError(404, "日志更新失败！"));
     }
   }
-  // 查看所有日志
+
+  /**
+    * Retrieve all login logs of a user
+    * @param {*} req the user's request
+    * @param {*} res the user's response
+    * @param {*} next nextFunction to further spread information
+    */
   static async getAllLogs(req, res, next) {
     try {
       var logs = await logModel.findAll({
@@ -27,7 +39,12 @@ class LogService {
     }
   }
 
-  // 分页查看日志
+  /**
+    * Retrieve login logs of a user with pagination
+    * @param {*} req the user's request
+    * @param {*} res the user's response
+    * @param {*} next nextFunction to further spread information
+    */
   static async getPagedLogsById(req, res, next) {
     try {
       let { pageSize, pageNum } = req.query;
@@ -46,7 +63,12 @@ class LogService {
     }
   }
 
-  // 根据时间最大值和userId寻找对应IP地址
+  /**
+    * Find out the user's last login IP
+    * @param {*} req the user's request
+    * @param {*} res the user's response
+    * @param {*} next nextFunction to further spread information
+    */
   static getLastLoginIp(req, res, next) {
     let { userId } = req.params;
     sequelize.query(
@@ -63,18 +85,25 @@ class LogService {
       console.log(err);
       next(createError(404, "IP查询失败！"));
     })
-    // logModel.findOne({
-    //   where: {
-    //     [Op.and]:
-    //     {
-    //       userId: userId
-    //     }
-    //   }, attributes: ['loginIp']
-    // }).then((result) => {
-    //   Response.sendOkResponseMsg(res, '查询成功！', result);
-    // }).catch(() => {
-    //   next(createError(404, "分页查询失败！"));
-    // })
+  }
+
+  /**
+    * Deletes all login logs(limit: once per day)
+    * @param {*} req the user's request
+    * @param {*} res the user's response
+    * @param {*} next nextFunction to further spread information
+    */
+  static deleteAllLogs(req, res, next) {
+    logModel.destroy({
+      where: {
+        userId: req.session.userId
+      }
+    }).then((result) => {
+      Response.sendOkResponseMsg(res, '日志删除成功！', null);
+    }).catch((err) => {
+      console.log(err);
+      next(createError(404, "日志删除失败！"));
+    })
   }
 
 }

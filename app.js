@@ -7,7 +7,6 @@ const corsOptions = require('./config/corsConfig');
 const antiXss = require('./middleware/security/antiXSSMiddleware');
 const { rateLimiterMiddleware } = require('./middleware/limit/RedisRateLimiter');
 const blogSession = require('./middleware/session/expressSession');
-const { isLoginMiddleware } = require('./middleware/isLoginMiddleware');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/userRouter');
@@ -35,7 +34,7 @@ app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', express.static(path.join(__dirname, '/public')))
 
-app.use('*', antiXss, isLoginMiddleware, rateLimiterMiddleware);
+app.use('*', antiXss, rateLimiterMiddleware);
 app.use('/user', usersRouter);
 app.use('/auth', loginRouter);
 app.use('/blogs', blogRouter);

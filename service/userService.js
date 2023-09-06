@@ -82,7 +82,7 @@ class userService {
     }
 
     /**
-    * Modify the current user's info(except for phone and email)
+    * Modify the current user's info(except for phone)
     * @param {*} req the user's request
     * @param {*} res the user's response
     * @param {*} next nextFunction to further spread information

@@ -4,14 +4,17 @@ const encrypt = require('../utils/encryptUtil');
 const mailService = require("../service/mailService");
 const ipService = require("../service/ipService");
 const cacheObj = require('../model/test');
+const expressLimiter = require("../config/redis/expressLimiter");
 
 var testRouter = express.Router();
+
 testRouter.get('/rateLimit', [testRateLimiterMiddleware], function (req, res) {
   res.send('nodej test rate limit');
 })
 
-testRouter.get('/array', function (req, res) {
-  res.send(process.env.ARRAY_TEST.split(','));
+testRouter.get('/array/:length', [expressLimiter], function (req, res) {
+  console.log(req.route.path);
+  res.send(process.env.AUTHORIZED_URLS.split(','));
 })
 
 testRouter.get('/password', function (req, res) {

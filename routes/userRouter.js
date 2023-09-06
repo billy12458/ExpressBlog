@@ -5,8 +5,12 @@ const mailService = require("../service/mailService");
 const codeMiddleware = require("../middleware/email/codeMiddleware");
 const authenticateMiddleware = require("../middleware/authenticateMiddleware");
 const emailMiddleware = require('../middleware/validate/emailMiddleware');
+const { isLoginMiddleware } = require('../middleware/user/isLoginMiddleware');
 
 var userRouter = express.Router();
+
+userRouter.all('*', isLoginMiddleware)
+
 userRouter.post('/sessions', function (req, res, next) {
   userService.getUserSessions(req, res, next);
 })
