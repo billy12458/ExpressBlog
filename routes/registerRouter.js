@@ -7,7 +7,7 @@ const registerService = require('../service/registerService');
 
 var registerRouter = express.Router();
 registerRouter.post('/register/sendCode', (req, res, next) => {
-  mailService.sendActivationCode(req, res, next);
+  mailService.sendActivationCode(req, null, res, next);
 }, [codeMiddleware]);
 
 registerRouter.patch('/register/sure', [authenticateMiddleware], (req, res, next) => {

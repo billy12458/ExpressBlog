@@ -8,17 +8,17 @@ const antiXss = require('./middleware/security/antiXSSMiddleware');
 const { rateLimiterMiddleware } = require('./middleware/limit/RedisRateLimiter');
 const blogSession = require('./middleware/session/expressSession');
 
-var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/userRouter');
 var loginRouter = require('./routes/loginRouter');
 var logoutRouter = require('./routes/logoutRouter');
 var registerRouter = require('./routes/registerRouter');
 var blogRouter = require('./routes/blogRouter');
-var testRouter = require('./routes/testRouter');
+// var testRouter = require('./routes/testRouter');
 var logRouter = require('./routes/logRouter');
-const likeRouter = require('./routes/likeRouter');
-const forgetRouter = require('./routes/forgetRouter');
-const suggestionRouter = require('./routes/suggestionRouter');
+var likeRouter = require('./routes/likeRouter');
+var forgetRouter = require('./routes/forgetRouter');
+var suggestionRouter = require('./routes/suggestionRouter');
+var cryptoRouter = require('./routes/cryptoRouter');
 
 var app = express();
 
@@ -38,7 +38,8 @@ app.use('*', antiXss, rateLimiterMiddleware);
 app.use('/user', usersRouter);
 app.use('/auth', loginRouter);
 app.use('/blogs', blogRouter);
-app.use('/test', testRouter);
+// app.use('/test', testRouter);
+app.use('/crypto', cryptoRouter);
 app.use('/logout', logoutRouter);
 app.use('/logs', logRouter);
 app.use('/likes', likeRouter);
