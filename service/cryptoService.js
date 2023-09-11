@@ -2,6 +2,7 @@ const crypto = require('crypto-js');
 const { Hex, Utf16, Utf8, Base64, Latin1 } = require('crypto-js').enc;
 const { OpenSSL, Hex: HexFormat } = require('crypto-js').format;
 const Response = require('../utils/ResponseUtil');
+const encrypt = require('../utils/encryptUtil');
 
 class cryptoService {
 
@@ -32,7 +33,7 @@ class cryptoService {
 
     /**
      * Static method to generate a `SHA1` (simple, 40 Bytes) hash
-     * @param {*} req the user's request, including the string to be encrypted
+     * @param {*} req the user's request, including the string to be encrypted and the type of conversion algorithm. Default is `Hex`
      * @param {*} res the user's response
      */
     static generateSimpleSHA1(req, res) {
@@ -53,7 +54,7 @@ class cryptoService {
 
     /**
      * Static method to generate a `SHA224` (simple, 56 Bytes) hash
-     * @param {*} req the user's request, including the string to be encrypted
+     * @param {*} req the user's request, including the string to be encrypted and the type of conversion algorithm. Default is `Hex`
      * @param {*} res the user's response
      */
     static generateSimpleSHA224(req, res) {
@@ -74,7 +75,7 @@ class cryptoService {
 
     /**
      * Static method to generate a `SHA256` (simple, 64 Bytes) hash
-     * @param {*} req the user's request, including the string to be encrypted
+     * @param {*} req the user's request, including the string to be encrypted and the type of conversion algorithm. Default is `Hex`
      * @param {*} res the user's response
      */
     static generateSimpleSHA256(req, res) {
@@ -91,6 +92,60 @@ class cryptoService {
         let { text, key } = req.body;
         var HmacSHA256 = crypto.HmacSHA256(text, key).toString(this.getResultAlgorithm(req.query.type));
         Response.sendOkResponseMsg(res, 'SHA256加盐加密成功！', HmacSHA256);
+    }
+
+    /**
+     * Static method to generate a `SHA384` (simple, 96 Bytes) hash
+     * @param {*} req the user's request, including the string to be encrypted and the type of conversion algorithm. Default is `Hex`
+     * @param {*} res the user's response
+     */
+    static generateSimpleSHA384(req, res) {
+        var SHA384Hash = crypto.SHA384(this.getEncryptContent(req)).toString(this.getResultAlgorithm(req.query.type));
+        Response.sendOkResponseMsg(res, 'SHA384简单加密成功！', SHA384Hash);
+    }
+
+    /**
+     * Static method to generate a `SHA384` (Hmac) hash
+     * @param {*} req the user's request, including the string to be encrypted and the key
+     * @param {*} res the user's response
+     */
+    static generateHMacSHA384(req, res) {
+        let { text, key } = req.body;
+        var HmacSHA384 = crypto.HmacSHA384(text, key).toString(this.getResultAlgorithm(req.query.type));
+        Response.sendOkResponseMsg(res, 'SHA384加盐加密成功！', HmacSHA384);
+    }
+
+    /**
+     * Static method to generate a `SHA512` (simple, 96 Bytes) hash
+     * @param {*} req the user's request, including the string to be encrypted and the type of conversion algorithm. Default is `Hex`
+     * @param {*} res the user's response
+     */
+    static generateSimpleSHA512(req, res) {
+        var SHA512Hash = crypto.SHA512(this.getEncryptContent(req)).toString(this.getResultAlgorithm(req.query.type));
+        Response.sendOkResponseMsg(res, 'SHA512简单加密成功！', SHA512Hash);
+    }
+
+    /**
+     * Static method to generate a `SHA512` (Hmac) hash
+     * @param {*} req the user's request, including the string to be encrypted and the key
+     * @param {*} res the user's response
+     */
+    static generateHMacSHA512(req, res) {
+        let { text, key } = req.body;
+        var HmacSHA512 = crypto.HmacSHA512(text, key).toString(this.getResultAlgorithm(req.query.type));
+        Response.sendOkResponseMsg(res, 'SHA512加盐加密成功！', HmacSHA512);
+    }
+
+    /**
+     * Static method to generate a `SHA512` (Hmac) hash. Here we use [bcrypt.js](https://github.com/dcodeIO/bcrypt.js) to help generate a hashed text with salt attached to it
+     * @param {*} req the user's request, including the string to be encrypted and the iteration count
+     * @param {*} res the user's response
+     * @returns null
+     */
+    static async generateBcryptText(req, res) {
+        let {text, iteration} = req.body;
+        var result = await encrypt.generatePassword(text, iteration);
+        Response.sendOkResponseMsg(res, 'Bcrypt加密成功！', result);
     }
 
     /**

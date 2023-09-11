@@ -32,12 +32,10 @@ class userService {
      * @param {*} res the user's response
      * @param {*} next nextFunction to further spread information
      */
-    // switch to global exception middleware
     static deleteSession(req, res, next) {
         sessionModel.findByIdAndRemove(req.params.sessionId).then((result) => {
             Response.sendOkResponseMsg(res, "删除成功！", result);
-        }).catch((err) => {
-            console.log(err);
+        }).catch(() => {
             next(createError(500, "删除失败！"));
         });
     }
@@ -104,6 +102,11 @@ class userService {
 
     // 代码一样，但是要在中间件里面进行数据校验和邮箱验证码验证！
     static modifyEmailInfo(req, res, next) {
+        this.modifyUserInfo(req, res, next);
+    }
+
+    // 代码一样，但是要在中间件里面进行数据校验和短信验证码验证！
+    static modifyphoneInfo(req, res, next) {
         this.modifyUserInfo(req, res, next);
     }
 
