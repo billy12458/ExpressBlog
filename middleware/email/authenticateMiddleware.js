@@ -1,6 +1,6 @@
 const createError = require('http-errors');
-const Response = require('../utils/ResponseUtil');
-const { emailRedisClient, emailRateLimitClient } = require('../config/redis/redisClient');
+const Response = require('../../utils/ResponseUtil');
+const { emailRedisClient, emailRateLimitClient } = require('../../config/redis/redisClient');
 
 /**
  * The middleware for authenticating email codes after `codeMiddleware` has done its job

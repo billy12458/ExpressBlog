@@ -15,7 +15,7 @@ class LogService {
   static async addLog(req, res, next) {
     try {
       await logModel.create({ ...req.body, userId: req.session.userId, loginIp: req.ip });
-      Response.sendOkResponseMsg(res, '登录成功！', null);
+      next();
     } catch (error) {
       next(createError(404, "日志更新失败！"));
     }
@@ -61,6 +61,30 @@ class LogService {
       console.log(error)
       next(createError(404, "分页查询失败！"));
     }
+  }
+
+  /**
+    * Find out the user's last login info
+    * @param {*} req the user's request
+    * @param {*} res the user's response
+    * @param {*} next nextFunction to further spread information
+    */
+  static getLastLoginInfo(req, res, next) {
+    let { userId } = req.params;
+    sequelize.query(
+      `SELECT * FROM logs where createdAt = (
+         SELECT MAX(createdAt) FROM logs WHERE userId = '${userId ? userId : req.session.userId}'
+       )`,
+      {
+        model: logModel,
+        mapToModel: true
+      }
+    ).then((result) => {
+      Response.sendOkResponseMsg(res, '查询成功！', result[0]);
+    }).catch((err) => {
+      console.log(err);
+      next(createError(404, "IP查询失败！"));
+    })
   }
 
   /**

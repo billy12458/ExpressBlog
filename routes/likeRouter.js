@@ -15,6 +15,14 @@ likeRouter.put('/count/:blogId', function (req, res, next) {
     likeService.getLikesCountById(req, res, next);
 })
 
+likeRouter.put('/lastlike/:blogId', [blogExistMiddleware], function (req, res, next) {
+    likeService.getLastLikeUserIdById(req, res, next);
+})
+
+likeRouter.post('/lastlike/:blogId/info', [blogExistMiddleware], function (req, res, next) {
+    likeService.getLastLikeInfoById(req, res, next);
+})
+
 likeRouter.get('/isLiked', function (req, res, next) {
     likeService.getIsLikedById(req, res, next);
 })

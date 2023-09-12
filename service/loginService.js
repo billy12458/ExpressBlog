@@ -9,7 +9,7 @@ class LoginService {
 
     }
 
-    // 一定不要忘记bcrypt的使用方法！
+    // 已测试：登录后更新状态
     static async loginAccount(req, res, next) {
         let user = await userDao.getLoginUser(req, res, next);
         if (await encrypt.comparePassword(req.body.password, user.password) == true) {

@@ -1,4 +1,4 @@
-const geoip = require('geoip-lite');
+const IP2Region = require('ip2region').default;
 const Response = require('../utils/ResponseUtil');
 
 class ipService {
@@ -7,9 +7,14 @@ class ipService {
 
     }
 
+    /**
+     * Retrieve the given ip, returns a detailed account
+     * @param {*} req the user's request
+     * @param {*} res the user'r response
+     * @param {*} next nextFunction
+     */
     static getIpInfo(req, res, next) {
-        const geo = geoip.lookup(req.query.ip);
-        Response.sendOkResponseMsg(res, 'Ip信息查询成功！', JSON.stringify(geo));
+        Response.sendOkResponseMsg(res, 'Ip信息查询成功！', JSON.stringify(new IP2Region().searchRaw(req.query.ip)));
     }
 }
 

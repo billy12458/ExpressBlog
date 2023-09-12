@@ -1,6 +1,6 @@
 const { blogModel } = require('../config/mongooseConfig');
 const Response = require('../utils/ResponseUtil');
-const { redisClient } = require('../config/redis/redisClient');
+const { blogViewClient } = require('../config/redis/redisClient');
 const createError = require('http-errors');
 
 // 后面稍微重构一下代码
@@ -133,7 +133,7 @@ class blogService {
      */
     static async getBlogViewById(req, res) {
         let { blogId } = req.params;
-        var result = Number(await redisClient.pfcount(blogId));
+        var result = Number(await blogViewClient.pfcount(blogId));
         Response.sendOkResponseMsg(res, '查询成功！', result);
     }
 

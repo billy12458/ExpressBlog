@@ -14,7 +14,7 @@ let emailLimitMiddleware = function (req, res, next) {
             });
         }
     }).catch((err) => {
-        next(createError(500, err.message));
+        next(createError(429, err.message));
     })
 }
 

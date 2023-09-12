@@ -2,8 +2,8 @@ const express = require("express");
 const { testRateLimiterMiddleware, mailRateLimiterMiddleware } = require('../middleware/limit/RedisRateLimiter');
 const encrypt = require('../utils/encryptUtil');
 const mailService = require("../service/mailService");
-const ipService = require("../service/ipService");
-const cacheObj = require('../model/test');
+const ipService = require("../service/IpService");
+// const cacheObj = require('../model/test');
 const expressLimiter = require("../config/redis/expressLimiter");
 
 var testRouter = express.Router();
@@ -34,18 +34,18 @@ testRouter.get('/ipInfo', function (req, res, next) {
 //   res.send(client.get('key2'))
 // })
 
-testRouter.get('/mysql', function (req, res, next) {
-  cacheObj.find({
-    where: {
-      age: {
-        [Op.gt]: 20
-      }
-    }
-  }).then(function (row) {
-    console.log(row); // sequelize db object
-    console.log(cacheObj.cacheHit); // true or false
-  });
-  res.send(row);
-})
+// testRouter.get('/mysql', function (req, res, next) {
+//   cacheObj.find({
+//     where: {
+//       age: {
+//         [Op.gt]: 20
+//       }
+//     }
+//   }).then(function (row) {
+//     console.log(row); // sequelize db object
+//     console.log(cacheObj.cacheHit); // true or false
+//   });
+//   res.send(row);
+// })
 
 module.exports = testRouter;

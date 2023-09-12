@@ -2,11 +2,12 @@ const express = require("express")
 // var registerService = require('../service/registerService');
 const mailService = require("../service/mailService");
 const codeMiddleware = require("../middleware/email/codeMiddleware");
-const authenticateMiddleware = require("../middleware/authenticateMiddleware");
+const emailLimitMiddleware = require('../middleware/email/emailLimitMiddleware');
+const authenticateMiddleware = require("../middleware/email/authenticateMiddleware");
 const registerService = require('../service/registerService');
 
 var registerRouter = express.Router();
-registerRouter.post('/register/sendCode', (req, res, next) => {
+registerRouter.post('/register/sendCode', [emailLimitMiddleware], (req, res, next) => {
   mailService.sendActivationCode(req, null, res, next);
 }, [codeMiddleware]);
 

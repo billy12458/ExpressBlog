@@ -1,6 +1,7 @@
 const createError = require('http-errors');
 const { likeRedisClient } = require('../config/redis/redisClient');
 const Response = require('../utils/ResponseUtil');
+const userService = require('./userService');
 
 class likeService {
 
@@ -50,6 +51,35 @@ class likeService {
             }).catch((err) => {
                 next(createError(500, "查询失败！"));
             });
+    }
+
+    /**
+     * Retrieve the userId of the last user who liked the blog
+     * @param {*} req user's request
+     * @param {*} res user's response
+     * @param {*} next nextFunction
+     */
+    static getLastLikeUserIdById(req, res, next) {
+        likeRedisClient.zrevrangebyscoreBuffer(req.params.blogId, Number.MAX_VALUE, 0, 'LIMIT', 0, 1).then((result) => {
+            Response.sendOkResponseMsg(res, '查询成功！', result[0].toString());
+        }).catch((err) => {
+            next(createError(500, "查询失败！"));
+        });
+    }
+
+    /**
+     * Retrieve the user info of the last user who liked the blog
+     * @param {*} req user's request
+     * @param {*} res user's response
+     * @param {*} next nextFunction
+     */
+    static getLastLikeInfoById(req, res, next) {
+        likeRedisClient.zrevrangebyscoreBuffer(req.params.blogId, Number.MAX_VALUE, 0, 'LIMIT', 0, 1).then((result) => {
+            req.params.userId = result[0].toString();
+            userService.getOthersUserInfoById(req, res, next);
+        }).catch(() => {
+            next(createError(500, "查询失败！"));
+        });
     }
 
     /**

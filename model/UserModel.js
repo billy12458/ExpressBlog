@@ -1,5 +1,6 @@
-const { DataTypes, Op } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const mysqlSequelize = require('../config/sequelize/sequelize');
+const { statusClient } = require('../config/redis/redisClient');
 const encrypt = require('../utils/encryptUtil');
 const moment = require('moment');
 const random = require('string-random');
@@ -94,6 +95,7 @@ User.addHook('beforeCreate', async (user, options) => {
         numbers: true,
         letters: false
     }));
+    statusClient.hset(user.userId, new Map().set('startDate', moment().format()));
 });
 
 // 在这里可以添加Joi数据校验

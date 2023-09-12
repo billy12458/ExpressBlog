@@ -22,4 +22,8 @@ logRouter.post('/user/:userId/ip', function (req, res, next) {
   logService.getLastLoginIp(req, res, next);
 })
 
+logRouter.post('/lastlogin', function (req, res, next) {
+  logService.getLastLoginInfo(req, res, next);
+})
+
 module.exports = logRouter;
