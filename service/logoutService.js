@@ -7,9 +7,10 @@ class logoutService {
     }
 
     // 已完成：登出后更新状态
-    static logoutProcess(req, res) {
+    static logoutProcess(req, res, next) {
+        req.userId = req.session.userId;
         req.session.destroy(() => {
-            Response.sendOkResponseMsg(res, '登出成功！', null)
+            next();
         })
     }
 }

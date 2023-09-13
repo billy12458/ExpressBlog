@@ -33,8 +33,8 @@ blogRouter.put('/search/title/:title/paged', [pageParamMiddleware], function (re
   blogService.getPagedBlogsByTitle(req, res, next);
 });
 
-blogRouter.put('/search/tags/paged', [pageParamMiddleware], function (req, res) {
-  blogService.getPagedBlogsByTags(req, res);
+blogRouter.put('/search/tags/paged', [pageParamMiddleware], function (req, res, next) {
+  blogService.getPagedBlogsByTags(req, res, next);
 });
 
 blogRouter.put('/search/title/:title', function (req, res) {
@@ -46,7 +46,7 @@ blogRouter.post('/search/user/:userId/paged', [pageParamMiddleware], function (r
 });
 
 blogRouter.post('/blog/:blogId', [blogViewMiddleware], function (req, res, next) {
-  blogService.getBlogById(req, res);
+  blogService.getBlogById(req, res, next);
 });
 
 blogRouter.delete('/delete/:blogId', [blogViewMiddleware], function (req, res, next) {

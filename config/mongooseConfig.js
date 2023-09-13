@@ -34,7 +34,7 @@ var sessionSchema = new mongoose.Schema({
     expires: {
         type: Date,
         required: true,
-        default: Date.now(),
+        unique: false
     },
     session: {
         type: String,

@@ -29,10 +29,10 @@ const User = mysqlSequelize.define('User', {
         type: DataTypes.INTEGER,
         allowNull: true,
         defaultValue: 0,
-        validate: {
-            min: 0,
-            max: 200
-        }
+        // validate: {
+        //     min: 0,
+        //     max: 200,
+        // }
     },
     avatar: {
         type: DataTypes.BLOB,
@@ -42,17 +42,17 @@ const User = mysqlSequelize.define('User', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        validate: {
-            isEmail: true
-        }
+        // validate: {
+        //     isEmail: true
+        // }
     },
     phone: {
         type: DataTypes.BIGINT,
         allowNull: true,
         comment: "用户手机号字段",
-        validate: {
-            isNumeric: true
-        }
+        // validate: {
+        //     isNumeric: true
+        // }
     },
     sex: {
         type: DataTypes.STRING,
@@ -71,9 +71,9 @@ const User = mysqlSequelize.define('User', {
     start_date: {
         type: DataTypes.DATE,
         defaultValue: moment().toDate(),
-        validate: {
-            isDate: true
-        }
+        // validate: {
+        //     isDate: true
+        // },
     }
 }, {
     timestamps: false,
@@ -83,8 +83,9 @@ const User = mysqlSequelize.define('User', {
     // 这是其他模型参数
 });
 
+// Please come up with a better solution!
 User.addHook('beforeValidate', async (user, options) => {
-    options.skip = ['start_date', 'password', 'userId', 'email']
+    // options.skip = ['start_date', 'password', 'userId', 'email', 'age', 'sex', 'phone']
 });
 
 User.addHook('beforeCreate', async (user, options) => {

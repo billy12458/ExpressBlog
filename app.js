@@ -52,6 +52,7 @@ app.use(function (err, req, res, next) {
     res.status(err.status ? err.status : 500).json({
       status: err.status ? err.status : 500,
       data: '出现异常！',
+      // msg: err instanceof Array ? Array(err.details).map(detail => detail.message) : err.message
       msg: err.message
     });
   }

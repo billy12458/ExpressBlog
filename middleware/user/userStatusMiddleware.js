@@ -8,13 +8,25 @@ let userStatusMiddleware = function (req, res, next) {
 }
 
 function updateStatus(req, res, next, field) {
-    statusClient.hmset(req.session.userId,
-        new Map().set(field, moment().format()).set('online', req.originalUrl === '/auth/login' ? true : false)).then(() => {
-            Response.sendOkResponseMsg(res, req.originalUrl === '/auth/login' ? '登录成功！' : '登出成功！', null);
+    statusClient.hmset(getUserId(req),
+        new Map().set(field, moment().format()).set('online', getIsOnline(req))).then(() => {
+            Response.sendOkResponseMsg(res, getResponseMessage(req), null);
         }).catch((err) => {
             console.log(err.message)
             next(createError(500, '操作失败！'));
         });
+}
+
+function getUserId(req) {
+    return (req.session === undefined ? req.userId : req.session.userId);
+}
+
+function getIsOnline(req) {
+    return (req.originalUrl === '/auth/login' ? true : false);
+}
+
+function getResponseMessage(req) {
+    return req.originalUrl === '/auth/login' ? '登录成功！' : '登出成功！'
 }
 
 module.exports = userStatusMiddleware;

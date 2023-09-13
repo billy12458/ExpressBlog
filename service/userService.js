@@ -91,21 +91,31 @@ class userService {
                 userId: {
                     [Op.eq]: req.session.userId
                 }
-            }
+            },
+            validate: false
         }).then(() => {
             Response.sendOkResponseMsg(res, "更新成功！", null);
         }).catch((err) => {
-            console.log(err.message);
             next(createError(500, "更新失败！"));
         })
     }
 
-    // 代码一样，但是要在中间件里面进行数据校验和邮箱验证码验证！
+    /**
+    * Modify the current user's email after authentication
+    * @param {*} req the user's request
+    * @param {*} res the user's response
+    * @param {*} next nextFunction to further spread information
+    */
     static modifyEmailInfo(req, res, next) {
         this.modifyUserInfo(req, res, next);
     }
 
-    // 代码一样，但是要在中间件里面进行数据校验和短信验证码验证！
+    /**
+    * Modify the current user's phone after authentication
+    * @param {*} req the user's request
+    * @param {*} res the user's response
+    * @param {*} next nextFunction to further spread information
+    */
     static modifyphoneInfo(req, res, next) {
         this.modifyUserInfo(req, res, next);
     }

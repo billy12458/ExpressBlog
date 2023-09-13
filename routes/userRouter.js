@@ -16,7 +16,7 @@ const statusService = require('../service/statusService');
 
 var userRouter = express.Router();
 
-userRouter.all('*', isLoginMiddleware)
+userRouter.all('*', isLoginMiddleware);
 
 userRouter.post('/sessions', function (req, res, next) {
   userService.getUserSessions(req, res, next);

@@ -106,7 +106,7 @@ class blogService {
      * @param {*} res the user's response
      * @param {*} next nextFunction
      */
-    static getPagedBlogsByTags(req, res) {
+    static getPagedBlogsByTags(req, res, next) {
         let { pageNum, pageSize } = req.query;
         blogModel.paginate(blogModel.find({ tags: { $in: req.body.tags } })
             .select(['userId', 'blogId', 'userName', 'title', 'tags', 'publishDate']), { page: pageNum, limit: pageSize })
@@ -117,7 +117,7 @@ class blogService {
             });
     }
 
-    static getBlogById(req, res) {
+    static getBlogById(req, res, next) {
         let { blogId } = req.params;
         blogModel.find({ blogId: blogId }).exec().then((result) => {
             Response.sendOkResponseMsg(res, '查询成功！', result);
@@ -160,7 +160,7 @@ class blogService {
      */
     static blogRecommendation(req, res, next) {
         blogModel.aggregate([
-            { $sample: { size: 10 } }
+            { $sample: { size: 10 } }, { $project: { content: 0 } }
         ]).then(results => {
             Response.sendOkResponseMsg(res, '推荐成功！', results);
         }).catch(() => {

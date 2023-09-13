@@ -7,8 +7,8 @@ var logoutRouter = express.Router();
 
 logoutRouter.all('*', isLoginMiddleware)
 
-logoutRouter.post('/logout', [userStatusMiddleware], function (req, res) {
-    logoutService.logoutProcess(req, res);
-})
+logoutRouter.post('/logout', function (req, res, next) {
+    logoutService.logoutProcess(req, res, next);
+}, [userStatusMiddleware]);
 
 module.exports = logoutRouter;

@@ -1,9 +1,10 @@
-const { updateSchema } = require('../../config/validate/JoiConfig');
+const {loginSchema} = require('../../config/validate/JoiConfig');
 const createError = require('http-errors');
 
 let updateMiddleware = function (req, res, next) {
-    updateSchema.validateAsync(req.body, {
-        warnings: true,
+    loginSchema.validateAsync(req.body, {
+        artifacts: true,
+        warnings: true
     }).then(() => {
         next();
     }).catch((err) => {
