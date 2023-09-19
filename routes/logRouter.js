@@ -1,6 +1,7 @@
 const express = require("express")
 var logService = require('../service/logService');
 const { isLoginMiddleware } = require("../middleware/user/isLoginMiddleware");
+const pageParamMiddleware = require('../middleware/validate/pageParamMiddleware');
 
 var logRouter = express.Router();
 
@@ -10,7 +11,7 @@ logRouter.patch('/all', function (req, res, next) {
   logService.getAllLogs(req, res, next);
 })
 
-logRouter.patch('/all/paged', function (req, res, next) {
+logRouter.patch('/all/paged', [pageParamMiddleware], function (req, res, next) {
   logService.getPagedLogsById(req, res, next);
 })
 

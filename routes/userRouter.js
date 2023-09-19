@@ -13,6 +13,8 @@ const phoneMiddleware = require('../middleware/validate/phoneMiddleware');
 const { isLoginMiddleware } = require('../middleware/user/isLoginMiddleware');
 const messageService = require('../service/messageService');
 const statusService = require('../service/statusService');
+const pageParamMiddleware = require('../middleware/validate/pageParamMiddleware');
+const expireMiddleware = require('../middleware/session/expireMiddleware');
 
 var userRouter = express.Router();
 
@@ -50,20 +52,20 @@ userRouter.post('/phone/modify', [phoneMiddleware, phoneVerify], function (req, 
   userService.modifyphoneInfo(req, res, next);
 });
 
-userRouter.patch('/status/my', function (req, res, next) {
-  statusService.getStatusById(req, res, next);
-})
-
 userRouter.get('/isLogin', function (req, res, next) {
   userService.isLogin(req, res, next);
 })
+
+userRouter.patch('/expire/account', function (req, res, next) {
+  userService.expireAccount(req, res, next);
+}, [expireMiddleware])
 
 userRouter.post('/info/:userId', function (req, res) {
   userService.getOthersUserInfoById(req, res);
 })
 
-userRouter.put('/search', function (req, res) {
-  userService.getPagedUsersBySearch(req, res);
+userRouter.put('/search', [pageParamMiddleware], function (req, res, next) {
+  userService.getPagedUsersBySearch(req, res, next);
 })
 
 module.exports = userRouter;

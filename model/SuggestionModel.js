@@ -80,6 +80,6 @@ const Suggestion = mysqlSequelize.define('suggestion', {
     timestamps: false,
     version: true
 }, {});
-// Suggestion.sync({force: true});
+Suggestion.sync({force: true});
 
 module.exports = Suggestion;

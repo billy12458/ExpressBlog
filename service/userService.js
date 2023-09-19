@@ -4,6 +4,12 @@ const userModel = require('../model/UserModel');
 const Response = require('../utils/ResponseUtil');
 const { userExcludeOptions, userSearchExclude, emailInclude } = require('../config/sequelize/excludeOptions');
 const createError = require('http-errors');
+const crypto = require('crypto-js');
+const { Hex } = require('crypto-js').enc;
+const assert = require('node:assert');
+var status = {
+    [Op.eq]: 0
+};
 
 class userService {
 
@@ -41,6 +47,37 @@ class userService {
     }
 
     /**
+     * expire the current user's account, if he or she provides the correct credentials.
+     * @param {*} req the user's request
+     * @param {*} res the user's response
+     * @param {*} next nextFunction to further spread information
+     */
+    static async expireAccount(req, res, next) {
+        console.log(req.session)
+        userModel.findOne({
+            where: {
+                userId: req.session.userId,
+                secret: crypto.SHA512(req.body.secret).toString(Hex)
+            }
+        }).then((result) => {
+            assert.notStrictEqual(result.dataValues, null, new Error("密保错误，注销失败！"));
+            this.updateExpireStatus(req);
+            next();
+        }).catch((err) => {
+            console.log(err);
+            next(createError(500, err.message));
+        });
+    }
+
+    static async updateExpireStatus(req) {
+        await userModel.update({ status: 1 }, {
+            where: {
+                userId: req.session.userId,
+            }
+        });
+    }
+
+    /**
      * Retrieve the current user's user info(without sensitive information)
      * @param {*} req the user's request
      * @param {*} res the user's response
@@ -48,7 +85,10 @@ class userService {
      */
     static getMyUserInfoById(req, res, next) {
         userModel.findOne({
-            where: { userId: req.session.userId },
+            where: {
+                userId: req.session.userId,
+                status: status
+            },
             attributes: userExcludeOptions
         }).then((userResult) => {
             Response.sendOkResponseMsg(res, "查询成功！", userResult);
@@ -70,7 +110,10 @@ class userService {
     */
     static getOthersUserInfoById(req, res, next) {
         userModel.findOne({
-            where: { userId: req.params.userId },
+            where: {
+                userId: req.params.userId,
+                status: status
+            },
             attributes: userSearchExclude
         }).then((userResult) => {
             Response.sendOkResponseMsg(res, "查询成功！", userResult);
@@ -120,13 +163,14 @@ class userService {
         this.modifyUserInfo(req, res, next);
     }
 
-    static getPagedUsersBySearch(req, res) {
+    static getPagedUsersBySearch(req, res, next) {
         let { pageSize, pageNum } = req.query;
         userModel.findAndCountAll({
             where: {
                 userName: {
                     [Op.like]: `%${req.body.userName}%`
-                }
+                },
+                status: status
             },
             attributes: userSearchExclude,
             offset: (pageNum - 1) * pageSize,

@@ -12,6 +12,14 @@ cryptoRouter.post('/md5/hmac', function (req, res) {
     cryptoService.generateHMacMD5(req, res);
 })
 
+cryptoRouter.post('/RIPEMD160/simple', function (req, res) {
+    cryptoService.generateSimpleRIPEMD160(req, res);
+})
+
+cryptoRouter.post('/RIPEMD160/hmac', function (req, res) {
+    cryptoService.generateHMacRIPEMD160(req, res);
+})
+
 cryptoRouter.post('/sha1/simple', function (req, res) {
     cryptoService.generateSimpleSHA1(req, res);
 })
@@ -66,6 +74,10 @@ cryptoRouter.post('/aes/encrypt', function (req, res) {
 
 cryptoRouter.post('/des/decrypt', function (req, res) {
     cryptoService.decryptDES(req, res);
+})
+
+cryptoRouter.post('/aes/decrypt', function (req, res) {
+    cryptoService.decryptAES(req, res);
 })
 
 module.exports = cryptoRouter;

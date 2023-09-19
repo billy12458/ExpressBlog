@@ -3,22 +3,30 @@ const encrypt = require('../utils/encryptUtil');
 const moment = require('moment');
 const logService = require('./logService');
 const createError = require('http-errors');
+const assert = require('node:assert');
 class LoginService {
 
     constructor() {
 
     }
 
-    // 已测试：登录后更新状态
+    /**
+     * Static method for a user to login(after password authentication)
+     * @param {*} req the user's request, including the secret to be encrypted
+     * @param {*} res the user's response
+     * @param {*} next nextFunction used to pass the request onto other middlewares
+     */
     static async loginAccount(req, res, next) {
-        let user = await userDao.getLoginUser(req, res, next);
-        if (await encrypt.comparePassword(req.body.password, user.password) == true) {
+        try {
+            let user = await userDao.getLoginUser(req, res, next);
+            assert.notStrictEqual(user, null, new Error('没有这个账号！'))
+            assert.strictEqual(await encrypt.comparePassword(req.body.password, user.password), true, new Error('您的账号/密码有误！'));
             req.session.userId = user.userId;
             req.session.userName = user.userName;
             req.session.loginTime = moment().toDate();
             logService.addLog(req, res, next);
-        } else {
-            next(createError(500, '您的账号/密码有误！'));
+        } catch (error) {
+            next(createError(500, error.message));
         }
     }
 

@@ -2,9 +2,9 @@ const nodemailer = require('nodemailer');
 
 // 创建一个用于发送邮件的传输器对象
 const transporter = nodemailer.createTransport({
-    host: 'smtp.qq.com',
-    port: 465,
-    service: 'foxmail', // 使用的邮件服务提供商
+    host: process.env.MAIL_HOST,
+    port: process.env.MAIL_PORT,
+    // service: 'netease', // 使用的邮件服务提供商
     auth: {
         user: process.env.MAIL_USER, // 发件人的邮箱账号
         pass: process.env.MAIL_PASS, // 发件人的邮箱密码或授权码

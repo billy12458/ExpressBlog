@@ -1,4 +1,3 @@
-var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -19,6 +18,8 @@ var likeRouter = require('./routes/likeRouter');
 var forgetRouter = require('./routes/forgetRouter');
 var suggestionRouter = require('./routes/suggestionRouter');
 var cryptoRouter = require('./routes/cryptoRouter');
+var safetyRouter = require('./routes/safetyRouter');
+var statusRouter = require('./routes/statusRouter');
 
 var app = express();
 
@@ -32,7 +33,7 @@ app.use(express.json({ inflate: true, limit: '5mb' }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', express.static(path.join(__dirname, '/public')))
+// app.use('/', express.static(path.join(__dirname, '/public/dist')))
 
 app.use('*', antiXss, rateLimiterMiddleware);
 app.use('/user', usersRouter);
@@ -45,6 +46,8 @@ app.use('/logs', logRouter);
 app.use('/likes', likeRouter);
 app.use('/forget', forgetRouter);
 app.use('/suggest', suggestionRouter);
+app.use('/safety', safetyRouter);
+app.use('/status', statusRouter)
 app.use(registerRouter);
 
 app.use(function (err, req, res, next) {

@@ -30,22 +30,4 @@ testRouter.get('/ipInfo', function (req, res, next) {
   ipService.getIpInfo(req, res, next)
 })
 
-// testRouter.get('/ssdb', function (req, res, next) {
-//   res.send(client.get('key2'))
-// })
-
-// testRouter.get('/mysql', function (req, res, next) {
-//   cacheObj.find({
-//     where: {
-//       age: {
-//         [Op.gt]: 20
-//       }
-//     }
-//   }).then(function (row) {
-//     console.log(row); // sequelize db object
-//     console.log(cacheObj.cacheHit); // true or false
-//   });
-//   res.send(row);
-// })
-
 module.exports = testRouter;

@@ -29,8 +29,8 @@ const loginSchema = Joi.object({
 });
 
 const pagedSchema = Joi.object({
-    pageNum: Joi.string().required().error(new Error("缺失pageNum参数！")),
-    pageSize: Joi.string().required().error(new Error("缺失pageSize参数！")),
+    pageNum: Joi.number().required().error(new Error("缺失pageNum参数！")),
+    pageSize: Joi.number().min(0).max(50).required().error(new Error("pageSize参数不符合规范！")),
 })
 
 const emailSchema = Joi.object().keys({
@@ -45,8 +45,8 @@ const phoneSchema = Joi.object().keys({
 
 const passwordSchema = Joi.object({
     email: Joi.string().required().email().error(new Error("邮箱不符合规范！")),
-    password: Joi.string().required().min(10).max(32).error(new Error("密码不符合规范！")),
-    newPassword: Joi.string().required().min(10).max(32).error(new Error("密码不符合规范！")),
+    password: Joi.string().required().min(8).max(32).error(new Error("密码不符合规范！")),
+    newPassword: Joi.string().required().min(8).max(32).error(new Error("密码不符合规范！")),
     code: Joi.string().length(8).error(new Error("验证码不符合规范！")),
 });
 

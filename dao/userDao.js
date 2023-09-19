@@ -2,8 +2,12 @@ const UserModel = require('../model/UserModel');
 const random = require('string-random');
 const ResponseUtil = require('../utils/ResponseUtil')
 const encrypt = require('../utils/encryptUtil');
+const { Op } = require('sequelize');
 const validator = require('validator').default;
 var include = ['userId', 'password', 'userName'];
+var status = {
+    [Op.eq]: 0
+};
 
 class UserDao {
     
@@ -40,7 +44,8 @@ class UserDao {
     static async getUserById(req) {
         var user = await UserModel.findOne({
             where: {
-                userId: req.body.userId
+                userId: req.body.userId,
+                status: status
             }, attributes: include
         });
         return user;
@@ -49,7 +54,8 @@ class UserDao {
     static async getUserByEmail(req) {
         var user = await UserModel.findOne({
             where: {
-                email: req.body.userId
+                email: req.body.userId,
+                status: status
             }, attributes: include
         });
         return user;
@@ -58,7 +64,8 @@ class UserDao {
     static async getUserByPhone(req) {
         var user = await UserModel.findOne({
             where: {
-                phone: req.body.userId
+                phone: req.body.userId,
+                status: status
             }, attributes: include
         });
         return user;

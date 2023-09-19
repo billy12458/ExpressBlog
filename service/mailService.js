@@ -1,4 +1,4 @@
-const { transporter, activateMailOptions, authenticationMailOptions, defaultMailOptions } = require('../config/mailConfig');
+const { transporter, activateMailOptions, authenticationMailOptions, defaultMailOptions } = require('../config/mail/mailConfig');
 const Response = require('../utils/ResponseUtil');
 const createError = require('http-errors');
 const random = require('string-random');

@@ -63,6 +63,6 @@ const Log = mysqlSequelize.define('logs', {
     timestamps: true,
     version: true
 }, {});
-// Log.sync({force: true});
+Log.sync({force: true});
 
 module.exports = Log;

@@ -16,8 +16,7 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static generateSimpleMD5(req, res) {
-        var MD5Hash = crypto.MD5(this.getEncryptContent(req)).toString(this.getResultAlgorithm(null));
-        Response.sendOkResponseMsg(res, 'MD5简单加密成功！', MD5Hash);
+        Response.sendOkResponseMsg(res, 'MD5简单加密成功！', encrypt.generateSimpleMD5(req));
     }
 
     /**
@@ -26,9 +25,7 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static generateHMacMD5(req, res) {
-        let { text, key } = req.body;
-        var HmacMD5 = crypto.HmacMD5(text, key).toString(this.getResultAlgorithm(req.query.type));
-        Response.sendOkResponseMsg(res, 'MD5加盐加密成功！', HmacMD5);
+        Response.sendOkResponseMsg(res, 'MD5加盐加密成功！', encrypt.generateHmacMD5(req));
     }
 
     /**
@@ -37,9 +34,27 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static generateSimpleSHA1(req, res) {
-        var SHA1Hash = crypto.SHA1(this.getEncryptContent(req)).toString(this.getResultAlgorithm(req.query.type));
-        Response.sendOkResponseMsg(res, 'SHA1简单加密成功！', SHA1Hash);
+        Response.sendOkResponseMsg(res, 'SHA1简单加密成功！', encrypt.generateSimpleSHA1(req));
     }
+
+    /**
+     * Static method to generate a `RIPEMD160` (simple, based on MD4 algorithm, 40 Bytes) hash
+     * @param {*} req the user's request, including the string to be encrypted and the type of conversion algorithm. Default is `Hex`
+     * @param {*} res the user's response
+     */
+    static generateSimpleRIPEMD160(req, res) {
+        Response.sendOkResponseMsg(res, 'RIPEMD160简单加密成功！', encrypt.generateSimpleRIPEMD160(req));
+    }
+
+    /**
+     * Static method to generate a `RIPEMD160` (Hmac) hash
+     * @param {*} req the user's request, including the string to be encrypted and the key
+     * @param {*} res the user's response
+     */
+    static generateHMacRIPEMD160(req, res) {
+        Response.sendOkResponseMsg(res, 'RIPEMD160加盐加密成功！', encrypt.generateHMacRIPEMD160(req));
+    }
+
 
     /**
      * Static method to generate a `SHA1` (Hmac) hash
@@ -47,9 +62,7 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static generateHMacSHA1(req, res) {
-        let { text, key } = req.body;
-        var HmacSHA1 = crypto.HmacSHA1(text, key).toString(this.getResultAlgorithm(req.query.type));
-        Response.sendOkResponseMsg(res, 'SHA1加盐加密成功！', HmacSHA1);
+        Response.sendOkResponseMsg(res, 'SHA1加盐加密成功！', encrypt.generateHmacSHA1(req));
     }
 
     /**
@@ -58,8 +71,7 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static generateSimpleSHA224(req, res) {
-        var SHA224Hash = crypto.SHA224(this.getEncryptContent(req)).toString(this.getResultAlgorithm(req.query.type));
-        Response.sendOkResponseMsg(res, 'SHA224简单加密成功！', SHA224Hash);
+        Response.sendOkResponseMsg(res, 'SHA224简单加密成功！', encrypt.generateSimpleSHA224(req));
     }
 
     /**
@@ -68,9 +80,7 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static generateHMacSHA224(req, res) {
-        let { text, key } = req.body;
-        var HmacSHA224 = crypto.HmacSHA224(text, key).toString(this.getResultAlgorithm(req.query.type));
-        Response.sendOkResponseMsg(res, 'SHA224加盐加密成功！', HmacSHA224);
+        Response.sendOkResponseMsg(res, 'SHA224加盐加密成功！', encrypt.generateHmacSHA224(req));
     }
 
     /**
@@ -79,8 +89,7 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static generateSimpleSHA256(req, res) {
-        var SHA256Hash = crypto.SHA256(this.getEncryptContent(req)).toString(this.getResultAlgorithm(req.query.type));
-        Response.sendOkResponseMsg(res, 'SHA256简单加密成功！', SHA256Hash);
+        Response.sendOkResponseMsg(res, 'SHA256简单加密成功！', encrypt.generateSimpleSHA256(req));
     }
 
     /**
@@ -89,9 +98,7 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static generateHMacSHA256(req, res) {
-        let { text, key } = req.body;
-        var HmacSHA256 = crypto.HmacSHA256(text, key).toString(this.getResultAlgorithm(req.query.type));
-        Response.sendOkResponseMsg(res, 'SHA256加盐加密成功！', HmacSHA256);
+        Response.sendOkResponseMsg(res, 'SHA256加盐加密成功！', encrypt.generateHmacSHA256(req));
     }
 
     /**
@@ -100,8 +107,7 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static generateSimpleSHA384(req, res) {
-        var SHA384Hash = crypto.SHA384(this.getEncryptContent(req)).toString(this.getResultAlgorithm(req.query.type));
-        Response.sendOkResponseMsg(res, 'SHA384简单加密成功！', SHA384Hash);
+        Response.sendOkResponseMsg(res, 'SHA384简单加密成功！', encrypt.generateSimpleSHA384(req));
     }
 
     /**
@@ -110,9 +116,7 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static generateHMacSHA384(req, res) {
-        let { text, key } = req.body;
-        var HmacSHA384 = crypto.HmacSHA384(text, key).toString(this.getResultAlgorithm(req.query.type));
-        Response.sendOkResponseMsg(res, 'SHA384加盐加密成功！', HmacSHA384);
+        Response.sendOkResponseMsg(res, 'SHA384加盐加密成功！', encrypt.generateHmacSHA384(req));
     }
 
     /**
@@ -121,8 +125,7 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static generateSimpleSHA512(req, res) {
-        var SHA512Hash = crypto.SHA512(this.getEncryptContent(req)).toString(this.getResultAlgorithm(req.query.type));
-        Response.sendOkResponseMsg(res, 'SHA512简单加密成功！', SHA512Hash);
+        Response.sendOkResponseMsg(res, 'SHA512简单加密成功！', encrypt.generateSimpleSHA512(req));
     }
 
     /**
@@ -131,13 +134,11 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static generateHMacSHA512(req, res) {
-        let { text, key } = req.body;
-        var HmacSHA512 = crypto.HmacSHA512(text, key).toString(this.getResultAlgorithm(req.query.type));
-        Response.sendOkResponseMsg(res, 'SHA512加盐加密成功！', HmacSHA512);
+        Response.sendOkResponseMsg(res, 'SHA512加盐加密成功！', encrypt.generateHmacSHA512(req));
     }
 
     /**
-     * Static method to generate a `SHA512` (Hmac) hash. Here we use [bcrypt.js](https://github.com/dcodeIO/bcrypt.js) to help generate a hashed text with salt attached to it
+     * Static method to generate a special hash. Here we use [bcrypt.js](https://github.com/dcodeIO/bcrypt.js) to help generate a hashed text with salt attached to it
      * @param {*} req the user's request, including the string to be encrypted and the iteration count
      * @param {*} res the user's response
      * @returns null
@@ -154,9 +155,7 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static encryptDES(req, res) {
-        let { text, key } = req.body;
-        var DESresult = crypto.DES.encrypt(text, key).toString(this.getFormatter(req.query.type));
-        Response.sendOkResponseMsg(res, 'DES加密成功！', DESresult);
+        Response.sendOkResponseMsg(res, 'DES加密成功！', encrypt.generateDES(req));
     }
 
     /**
@@ -165,15 +164,25 @@ class cryptoService {
      * @param {*} res the user's response
      */
     static encryptAES(req, res) {
-        let { text, key } = req.body;
-        var AESresult = crypto.AES.encrypt(text, key).toString(this.getFormatter(req.query.type));
-        Response.sendOkResponseMsg(res, 'AES加密成功！', AESresult);
+        Response.sendOkResponseMsg(res, 'AES加密成功！', encrypt.encryptAES(req));
     }
 
+    /**
+     * Static method to decrypt a `DES-based` cipher text
+     * @param {*} req the user's request, including the string to be decrypted
+     * @param {*} res the user's response
+     */
     static decryptDES(req, res) {
-        let { cipherText, key } = req.body;
-        var DESresult = crypto.DES.decrypt(cipherText, key).toString(this.getResultAlgorithm(req.query.type));
-        Response.sendOkResponseMsg(res, 'DES解密成功！', DESresult);
+        Response.sendOkResponseMsg(res, 'DES解密成功！', encrypt.decryptDES(req));
+    }
+
+    /**
+     * Static method to decrypt a `AES-based` cipher text
+     * @param {*} req the user's request, including the string to be decrypted
+     * @param {*} res the user's response
+     */
+    static decryptAES(req, res) {
+        Response.sendOkResponseMsg(res, 'AES解密成功！', encrypt.decryptAES(req));
     }
 
     /**
@@ -187,14 +196,6 @@ class cryptoService {
                 (type === 'Utf8' ? algorithm = Utf8 :
                     type === 'Utf16' ? algorithm = Utf16 : algorithm == Latin1))
         return algorithm;
-    }
-
-    /**
-     * Static method to determine which formatter will the result use, either `Hex` or `OpenSSL`. Here we use ternary operator
-     * @param {*} type the type from the user
-     */
-    static getFormatter(type) {
-        return (type === 'Hex' ? HexFormat : OpenSSL);
     }
 
     static getEncryptContent(req) {

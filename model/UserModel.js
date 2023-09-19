@@ -74,6 +74,17 @@ const User = mysqlSequelize.define('User', {
         // validate: {
         //     isDate: true
         // },
+    },
+    status: {
+        type: DataTypes.TINYINT,
+        allowNull: true,
+        defaultValue: 0,
+        comment: "User status, used to expire an account"
+    },
+    secret: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        comment: "User secret, used to expire an account"
     }
 }, {
     timestamps: false,
@@ -116,7 +127,7 @@ User.addHook('beforeUpdate', async (user, options) => {
 //     console.log(row); // sequelize db object
 //     console.log(cacheObj.cacheHit); // true or false
 // });
-// User.sync({force: true});
+User.sync({force: true});
 
 module.exports = User;
 
