@@ -1,5 +1,5 @@
 # [ExpressBlog](https://api.expressjsblog.com.cn)
-### An backend blog server developed with `Nodejs` and `Expressjs`  
+### A backend blog server developed with `Nodejs` and `Expressjs`  
 ---
 [**中文版**](README.zh_CN.md) [**English version**](README..md)   
 This is a backend server developed with `Nodejs` and `Expressjs`. It comprises of several sections:  
