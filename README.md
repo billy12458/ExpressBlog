@@ -18,7 +18,7 @@ This is a backend server developed with `Nodejs` and `Expressjs`. It comprises o
 
 Our development has <u>nearly come to an end</u>, and in order to learn more about our project, 
 * You can give it a shot at [ExpressBlog API Website](https://api.expressjsblog.com.cn).
-* In case you aren't familiar with all the APIs, we have exported our testing plan with the help of ApiPost. So just visit [Apipost-基于协作,不止于API文档、调试、Mock、自动化测试](https://console-docs.apipost.cn/passwordPage/30bad7c674aabf61?pathname=/preview/cb00dda5060d2a49/30bad7c674aabf61&&target_id=null&&name=blogs) to start your API test.
+* In case you aren't familiar with all the APIs, we have exported our testing plan with the help of ApiPost. So just visit [Apipost-基于协作,不止于API文档、调试、Mock、自动化测试](https://console-docs.apipost.cn/passwordPage/30bad7c674aabf61?pathname=/preview/cb00dda5060d2a49/30bad7c674aabf61&&target_id=null&&name=blogs) and input 611492611492 to start your API test.
 * The documentation website is under construction, visit [ExpressBlog Documentation](https://www.expressjsblog.com.cn) for more information.
 * Should you have any relevant questions, please commit an issue on github.
 
