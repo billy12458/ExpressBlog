@@ -17,7 +17,8 @@ This is a backend server developed with `Nodejs` and `Expressjs`. It comprises o
 **3.** [`ioredis`](https://www.npmjs.com/package/ioredis)
 
 Our development has <u>nearly come to an end</u>, and in order to learn more about our project, 
-* You can give it a shot at [ExpressBlog API Website](https://api.expressjsblog.com.cn)  
+* You can give it a shot at [ExpressBlog API Website](https://api.expressjsblog.com.cn).
+* In case you aren't familiar with all the APIs, we have exported our testing plan with the help of ApiPost. So just visit [Apipost-基于协作,不止于API文档、调试、Mock、自动化测试](https://console-docs.apipost.cn/passwordPage/30bad7c674aabf61?pathname=/preview/cb00dda5060d2a49/30bad7c674aabf61&&target_id=null&&name=blogs) to start your API test.
 * The documentation website is under construction, visit [ExpressBlog Documentation](https://www.expressjsblog.com.cn) for more information.
 * Should you have any relevant questions, please commit an issue on github.
 
@@ -27,5 +28,6 @@ Our development has <u>nearly come to an end</u>, and in order to learn more abo
 > ① This release is **non-production/pre-release**, don't use it in any serious occasions!  
 > ② The configuration file(`.env`) contains **private configurations**, so in current releases, we <u>not only deleted it, but also changed relevant keys and tokens. </u>Sorry for any inconvenience!  
 > ③ This README.md may **BE REPLACED** in the near future, once the documentation part has finished.  
-> ④ Please go through the documentation part carefully so that you can gain a better understanding of our project!  
+> ④ Some of our APIs have limits, please refer to the documentation for more details.  
+> ⑤ Please go through the documentation part carefully so that you can gain a better understanding of our project!  
 
