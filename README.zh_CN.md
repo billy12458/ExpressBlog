@@ -1,3 +1,4 @@
+![Nodejs图片](https://i1.hdslb.com/bfs/archive/43522aed95e85f89f5ced9f7ba82381bdfc7676d.jpg@480w_270h_1c)
 # [ExpressBlog](https://api.expressjsblog.com.cn) 
 
 ### 使用`Nodejs`和`Expressjs`开发的后端博客服务器
@@ -17,7 +18,8 @@
 **3.** [`ioredis`](https://www.npmjs.com/package/ioredis)
 
 我们的开发<u>已经接近尾声</u>，为了了解更多关于我们项目的信息，
-* 您可以在[ExpressBlog API网站](https://api.expressjsblog.com.cn)上尝试一下。  
+* 您可以在[ExpressBlog API网站](https://api.expressjsblog.com.cn)上尝试一下。
+* 如果你对本项目的接口不够熟悉（一般都是这样的），我们使用ApiPost进行协作，并且已经将项目分享至网上。所以你只需要访问[Apipost-基于协作,不止于API文档、调试、Mock、自动化测试](https://console-docs.apipost.cn/passwordPage/30bad7c674aabf61?pathname=/preview/cb00dda5060d2a49/30bad7c674aabf61&&target_id=null&&name=blogs)，输入密码：**611492611492** 后就可以开始在线调试了！
 * 文档网站正在建设中，请访问[ExpressBlog文档](https://www.expressjsblog.com.cn)了解更多信息。
 * 如果您有任何相关问题，请在github上提交一个问题。
   
@@ -27,4 +29,5 @@
 >①本次发布以及本项目所有代码为**非生产/预发布**，请勿在任何正式场合使用！  
 >②配置文件中（`.env`）包含**隐私配置**。因此在当前版本中，我们不仅删除了它，还更改了相关的密钥和令牌</u>。 很抱歉给您带来不便！  
 >③一旦文档部分完成，本README.md可能**在不久的将来**被替换。  
->④请仔细阅读文档部分，以便您更好地了解我们的项目！
+>④ 我们的某些接口有使用限制，请认真阅读文档来进一步了解。  
+>⑤请仔细阅读文档部分，以便您更好地了解我们的项目！
